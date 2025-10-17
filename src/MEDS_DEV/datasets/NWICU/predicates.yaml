@@ -13,26 +13,148 @@ predicates:
     code: { regex: "^ICU_ADMISSION//.*" }
   icu_discharge:
     code: { regex: "^ICU_DISCHARGE//.*" }
-  creatinine_mgdl:
-    code: { any: ["LAB//100002//mg/dL", "LAB//100189//mg/dL"] }
 
-  sodium_meql:
-    code: { any: ["LAB//100010//mEq/L"] }
+  creatinine_1:
+    code: LAB//100002//mg/dL
+  creatinine_2:
+    code: LAB//100189//mg/dL
+  abnormally_high_creatinine_1:
+    code: LAB//100002//mg/dL
+    value_min: 1.3 # mg/dL
+    value_min_inclusive: False
+    value_max: null
+  abnormally_high_creatinine_2:
+    code: LAB//100189//mg/dL
+    value_min: 1.3 # mg/dL
+    value_min_inclusive: False
+    value_max: null
+  creatinine:
+    expr: or(creatinine_1, creatinine_2)
+  abnormally_high_creatinine:
+    expr: or(abnormally_high_creatinine_1, abnormally_high_creatinine_2)
 
-  # bicarbonate_meql:
-  #   code: { any: ["LAB//227443//mEq/L", "LAB//50882//mEq/L"] }
+  sodium_1:
+    code: LAB//100010//mEq/L
+  abnormally_low_sodium_1:
+    code: LAB//100010//mEq/L
+    value_min: null
+    value_max: 135 # mEq/L
+    value_max_inclusive: False
+  sodium:
+    expr: sodium_1
+  abnormally_low_sodium:
+    expr: abnormally_low_sodium_1
 
-  hemoglobin_gdl:
-    code: { any: ["LAB//100007//g/dl"] }
+  hemoglobin_1:
+    code: LAB//100007//g/dl
+  abnormally_low_hemoglobin_1:
+    code: LAB//100007//g/dl
+    value_min: null
+    value_max: 13 # g/dL
+    value_max_inclusive: False
+  hemoglobin:
+    expr: hemoglobin_1
+  abnormally_low_hemoglobin:
+    expr: abnormally_low_hemoglobin_1
 
-  wbc_kul:
-    code: { any: ["LAB//100083///hpf", "LAB//100083//#/hpf"] }
+  wbc_1:
+    code: LAB//100083///hpf
+  wbc_2:
+    code: LAB//100083//#/hpf
+  abnormally_high_wbc_1:
+    code: LAB//100083///hpf
+    value_min: 11 # K/uL
+    value_min_inclusive: False
+    value_max: null
+  abnormally_high_wbc_2:
+    code: LAB//100083//#/hpf
+    value_min: 11 # K/uL
+    value_min_inclusive: False
+    value_max: null
+  wbc:
+    expr: or(wbc_1, wbc_2)
+  abnormally_high_wbc:
+    expr: or(abnormally_high_wbc_1, abnormally_high_wbc_2)
 
-  platelets_kul:
-    code:
-      {
-        any: ["LAB//100014//K/UL", "LAB//100014//10ˆ3/µL", "LAB//100014//K/µL"],
-      }
+  platelets_1:
+    code: LAB//100014//K/UL
+  platelets_2:
+    code: LAB//100014//10ˆ3/µL
+  platelets_3:
+    code: LAB//100014//K/µL
+  abnormally_low_platelets_1:
+    code: LAB//100014//K/UL
+    value_min: null
+    value_max: 150 # K/uL
+    value_max_inclusive: False
+  abnormally_low_platelets_2:
+    code: LAB//100014//10ˆ3/µL
+    value_min: null
+    value_max: 150 # K/uL
+    value_max_inclusive: False
+  abnormally_low_platelets_3:
+    code: LAB//100014//K/µL
+    value_min: null
+    value_max: 150 # K/uL
+    value_max_inclusive: False
+  platelets:
+    expr: or(platelets_1, platelets_2, platelets_3)
+  abnormally_low_platelets:
+    expr: or(abnormally_low_platelets_1, abnormally_low_platelets_2, abnormally_low_platelets_3)
 
-  map_mmhg:
-    code: { any: ["LAB//320050//mmHg", "LAB//320051//mmHg"] }
+  map_1:
+    code: LAB//320050//mmHg
+  map_2:
+    code: LAB//320051//mmHg
+  abnormally_low_map_1:
+    code: LAB//320050//mmHg
+    value_min: null
+    value_max: 65 # mmHg
+    value_max_inclusive: False
+  abnormally_low_map_2:
+    code: LAB//320051//mmHg
+    value_min: null
+    value_max: 65 # mmHg
+    value_max_inclusive: False
+  map:
+    expr: or(map_1, map_2)
+  abnormally_low_map:
+    expr: or(abnormally_low_map_1, abnormally_low_map_2)
+# predicates:
+#   hospital_admission:
+#     code: { regex: "^HOSPITAL_ADMISSION//.*" }
+#   hospital_discharge:
+#     code: { regex: "^HOSPITAL_DISCHARGE//.*" }
+
+#   ED_registration:
+#     code: { regex: "^ED_REGISTRATION//.*" }
+#   ED_discharge:
+#     code: { regex: "^ED_OUT//.*" }
+
+#   icu_admission:
+#     code: { regex: "^ICU_ADMISSION//.*" }
+#   icu_discharge:
+#     code: { regex: "^ICU_DISCHARGE//.*" }
+#   creatinine_mgdl:
+#     code: { any: ["LAB//100002//mg/dL", "LAB//100189//mg/dL"] }
+
+#   sodium_meql:
+#     code: { any: ["LAB//100010//mEq/L"] }
+
+#   # bicarbonate_meql:
+#   #   code: { any: ["LAB//227443//mEq/L", "LAB//50882//mEq/L"] }
+
+#   hemoglobin_gdl:
+#     code: { any: ["LAB//100007//g/dl"] }
+
+#   wbc_kul:
+#     code: { any: ["LAB//100083///hpf", "LAB//100083//#/hpf"] }
+
+#   platelets_kul:
+#     code:
+#       {
+#         any: ["LAB//100014//K/UL", "LAB//100014//10ˆ3/µL", "LAB//100014//K/µL"],
+#       }
+
+#   map_mmhg:
+#     code: { any: ["LAB//320050//mmHg", "LAB//320051//mmHg"] }

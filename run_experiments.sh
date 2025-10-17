@@ -63,3 +63,12 @@ for dataset in "${datasets[@]}"; do
         echo "Completed dataset: $DATASET_NAME, task: $task"
     done
 done
+
+for TASK_NAME in "${tasks[@]}"; do
+    echo "Processing task: $TASK_NAME"
+    export EVALUATION_DIR=$DATASET_DIR/models/aggregated_results/${TASK_NAME}
+    export FINETUNED_MODEL_DIR=$DATASET_DIR/models/${MODEL_NAME}/${TASK_NAME}
+    # Extract results for both held_out and tuning sets
+    meds-dev-evaluation predictions_path="$FINETUNED_MODEL_DIR""/results/**/best_trial/held_out_predictions.parquet" output_dir="$EVALUATION_DIR/held_out"
+    meds-dev-evaluation predictions_path="$FINETUNED_MODEL_DIR""/results/**/best_trial/tuning_predictions.parquet" output_dir="$EVALUATION_DIR/tuning"
+done
