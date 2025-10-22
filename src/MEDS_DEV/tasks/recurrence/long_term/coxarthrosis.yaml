@@ -1,0 +1,37 @@
+metadata:
+  description:
+    Prediction task for hip osteoarthritis incidence following hospital
+    discharge
+  links: []
+  contacts:
+    - name: Robin van de Water
+      github_username: rvandewater
+  supported_datasets:
+    - MIMIC-IV
+predicates:
+  hospital_admission: ???
+  hospital_discharge: ???
+  coxarthrosis:
+    code:
+      regex: M16
+trigger: hospital_discharge
+windows:
+  input:
+    start: end <- hospital_admission
+    end: trigger
+    start_inclusive: false
+    end_inclusive: true
+    index_timestamp: end
+  gap:
+    start: trigger
+    end: start + 365 days
+    start_inclusive: false
+    end_inclusive: true
+    has:
+      coxarthrosis: (None, 0)
+  target:
+    start: gap.end
+    end: start + 1095 days
+    start_inclusive: false
+    end_inclusive: true
+    label: coxarthrosis

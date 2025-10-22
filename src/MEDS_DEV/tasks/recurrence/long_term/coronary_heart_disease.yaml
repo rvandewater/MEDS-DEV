@@ -1,0 +1,37 @@
+metadata:
+  description:
+    Prediction task for coronary heart disease incidence following hospital
+    discharge
+  links: []
+  contacts:
+    - name: Robin van de Water
+      github_username: rvandewater
+  supported_datasets:
+    - MIMIC-IV
+predicates:
+  hospital_admission: ???
+  hospital_discharge: ???
+  coronary_heart_disease:
+    code:
+      regex: I20.0|I21|I22|I23|I24|I25|I46
+trigger: hospital_discharge
+windows:
+  input:
+    start: end <- hospital_admission
+    end: trigger
+    start_inclusive: false
+    end_inclusive: true
+    index_timestamp: end
+  gap:
+    start: trigger
+    end: start + 365 days
+    start_inclusive: false
+    end_inclusive: true
+    has:
+      coronary_heart_disease: (None, 0)
+  target:
+    start: gap.end
+    end: start + 1095 days
+    start_inclusive: false
+    end_inclusive: true
+    label: coronary_heart_disease

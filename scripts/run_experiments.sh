@@ -1,4 +1,7 @@
 #!/bin/bash
+export DATASET_NAME="MIMIC-IV"
+export DATASET_DIR="/sc/home/robin.vandewater/datasets/meds/MIMIC-IV"
+meds-dev-dataset dataset=$DATASET_NAME output_dir=$DATASET_DIR
 
 # Define the datasets and tasks
 export datasets=(
@@ -26,6 +29,8 @@ export tasks=(
 export tasks=(
     "mortality/in_icu/first_24h"
 )
+export datasets=("HIRID")
+
 # Base directory for datasets
 export base_dir="/sc/home/robin.vandewater/datasets/meds"
 
@@ -45,8 +50,12 @@ for dataset in "${datasets[@]}"; do
         echo "Completed dataset: $DATASET_NAME, task: $task"
     done
 done
-
+# srun -c 8 --mem 100GB -p gpu-interactive --gpus=1  -t 8:00:00 --account=sci-lippert --pty bash
 export MODEL_NAME="meds_tab/tiny"
+# export MODEL_NAME="cehrbert"
+# export MODEL_NAME="genhpf"
+# export MODEL_NAME="cehrbert"
+# export datasets=("NWICU")
 for dataset in "${datasets[@]}"; do
     export DATASET_NAME=$dataset
     export DATASET_DIR="$base_dir/$dataset"
@@ -58,17 +67,14 @@ for dataset in "${datasets[@]}"; do
         export FINETUNED_MODEL_DIR="$DATASET_DIR/models/$TASK_NAME/$MODEL_NAME"
         export PREDICTIONS_DIR="$DATASET_DIR/predictions/$TASK_NAME/$MODEL_NAME"
         # Run the meds-dev-task command
-        meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=predict dataset_type=supervised split=held_out output_dir="$PREDICTIONS_DIR" model_initialization_dir="$FINETUNED_MODEL_DIR"
-
+        export PRETRAINED_MODEL_DIR="$DATASET_DIR/models/$MODEL_NAME"
+        if [ "$MODEL_NAME" != "meds_tab/tiny" ]; then
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" mode=train dataset_type=unsupervised output_dir="$PRETRAINED_MODEL_DIR"
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$PRETRAINED_MODEL_DIR"
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=predict dataset_type=supervised split=held_out output_dir="$PREDICTIONS_DIR" model_initialization_dir="$FINETUNED_MODEL_DIR"
+        else
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$PRETRAINED_MODEL_DIR"
+        fi
         echo "Completed dataset: $DATASET_NAME, task: $task"
     done
-done
-
-for TASK_NAME in "${tasks[@]}"; do
-    echo "Processing task: $TASK_NAME"
-    export EVALUATION_DIR=$DATASET_DIR/models/aggregated_results/${TASK_NAME}
-    export FINETUNED_MODEL_DIR=$DATASET_DIR/models/${MODEL_NAME}/${TASK_NAME}
-    # Extract results for both held_out and tuning sets
-    meds-dev-evaluation predictions_path="$FINETUNED_MODEL_DIR""/results/**/best_trial/held_out_predictions.parquet" output_dir="$EVALUATION_DIR/held_out"
-    meds-dev-evaluation predictions_path="$FINETUNED_MODEL_DIR""/results/**/best_trial/tuning_predictions.parquet" output_dir="$EVALUATION_DIR/tuning"
 done

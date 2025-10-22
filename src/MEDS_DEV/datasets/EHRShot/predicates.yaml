@@ -11,6 +11,7 @@ predicates:
   hospital_discharge:
     code: "Visit/DP"
   # ICU visit details - care sites with ICU designation
+  #TODO: separate end from start for care sites to be used with ACES
   icu_admission:
     code:
       any:

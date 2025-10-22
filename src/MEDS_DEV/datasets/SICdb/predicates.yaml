@@ -15,24 +15,293 @@ predicates:
     code: { regex: "^DISCHARGE*" }
   creatinine_mgdl:
     code: { any: ["LAB//LOINC//12189-7"] }
+  # Elevated Creatinine task predicates
+  creatinine_1:
+    code: LAB//LOINC//2160-0
+  creatinine_2:
+    code: LAB//LOINC//12189-7
+  urine_creatinine:
+    code: LAB//LOINC//35674-1
+  abnormally_high_creatinine_1:
+    code: LAB//LOINC//2160-0
+    value_min: 1.2 # mg/dL
+    value_min_inclusive: False
+    value_max: null
+  abnormally_high_creatinine_2:
+    code: LAB//LOINC//14682-9
+    value_min: 1.2 # mg/dL
+    value_min_inclusive: False
+    value_max: null
+  abnormally_high_urine_creatinine:
+    code: LAB//LOINC//35674-1
+    value_min: 370 # mg/dL
+    value_min_inclusive: False
+    value_max: null
+  creatinine:
+    expr: or(creatinine_1, creatinine_2)
+  abnormally_high_creatinine:
+    expr: or(abnormally_high_creatinine_1, abnormally_high_creatinine_2, abnormally_high_urine_creatinine)
 
-  # sodium_meql:
-  #   code: { any: ["LAB//100010//mEq/L"] }
+  # Hyponatremia task predicates
+  sodium_1:
+    code: LAB//LOINC//2951-2
+  sodium_2:
+    code: LAB//LOINC//2955-3
+  sodium_3:
+    code: LAB//LOINC//2956-1
+  abnormally_low_sodium_1:
+    code: LAB//LOINC//2951-2
+    value_min: null
+    value_max: 135 # mEq/L
+    value_max_inclusive: False
+  abnormally_low_sodium_2:
+    code: LAB//LOINC//2955-3
+    value_min: null
+    value_max: 135 # mEq/L
+    value_max_inclusive: False
+  abnormally_low_sodium_3:
+    code: LAB//LOINC//2956-1
+    value_min: null
+    value_max: 135 # mEq/L
+    value_max_inclusive: False
+  sodium:
+    expr: or(sodium_1, sodium_2, sodium_3)
+  abnormally_low_sodium:
+    expr: or(abnormally_low_sodium_1, abnormally_low_sodium_2, abnormally_low_sodium_3)
+  hyponatremia_1:
+    code: SNOMED//267447008//start
+  hyponatremia_2:
+    code: SNOMED//89627008//start
+  hyponatremia:
+    code: or(hyponatremia_1, hyponatremia_2)
 
-  # bicarbonate_meql:
-  #   code: { any: ["LAB//227443//mEq/L", "LAB//50882//mEq/L"] }
+  # Metabolic Acidosis task predicates
+  bicarbonate_1:
+    code: LAB//LOINC//2021-4
+  bicarbonate_2:
+    code: LAB//LOINC//1961-2
+  abnormally_low_bicarbonate_1:
+    code: LAB//LOINC//1961-2
+    value_min: null
+    value_max: 22 # mEq/L
+    value_max_inclusive: False
+  abnormally_low_bicarbonate_2:
+    code: LAB//LOINC//1961-2
+    value_min: null
+    value_max: 22 # mEq/L
+    value_max_inclusive: False
+  bicarbonate:
+    expr: or(bicarbonate_1, bicarbonate_2)
+  abnormally_low_bicarbonate:
+    expr: or(abnormally_low_bicarbonate_1, abnormally_low_bicarbonate_2)
 
-  # hemoglobin_gdl:
-  #   code: { any: ["LAB//100007//g/dl"] }
+  metabolic_acidosis_1:
+    code: SNOMED//59455009//start
+  lactic_acidosis_1:
+    code: SNOMED//91273001//start
+  ketoacidosis_1:
+    code: SNOMED//420270002//start
+  metabolic_acidosis:
+    expr: or(metabolic_acidosis_1, lactic_acidosis_1, ketoacidosis_1)
+  # ['LOINC/2030-5',
+  #  'LOINC/2617-9',
+  #  'LOINC/2614-6',
+  #  'LOINC/19227-8',
+  #  'LOINC/2616-1',
+  #  'LOINC/2715-1',
+  #  'LOINC/2615-3',
+  #  'LOINC/2714-4',
+  #  'LOINC/20563-3',
+  #  'LOINC/39533-5',
+  #  'LOINC/2031-3']
 
-  # wbc_kul:
-  #   code: { any: ["LAB//100083///hpf", "LAB//100083//#/hpf"] }
+  # Anemia task predicates
+  hemoglobin:
+    code: "LAB//LOINC//718-7"
+  # hemoglobin_2:
+  #   code: LAB//50811//g/dL
+  abnormally_low_hemoglobin:
+    code: "LAB//LOINC//718-7"
+    value_min: null
+    value_max: 13 # g/dL
+    value_max_inclusive: False
+  # abnormally_low_hemoglobin_2:
+  #   code: LAB//50811//g/dL
+  #   value_min: null
+  #   value_max: 13 # g/dL
+  #   value_max_inclusive: False
+  # hemoglobin:
+  #   expr: hemoglobin_1
+  # abnormally_low_hemoglobin:
+  #   expr: abnormally_low_hemoglobin_1
 
-  # platelets_kul:
-  #   code:
-  #     {
-  #       any: ["LAB//100014//K/UL", "LAB//100014//10ˆ3/µL", "LAB//100014//K/µL"],
-  #     }
+  # Leukocytosis task predicates
+  wbc_1:
+    code: LAB//LOINC//26464-8
+  wbc_2:
+    code: LAB//LOINC//26511-6
+  abnormally_high_wbc_1:
+    code: LAB//LOINC//6690-2
+    value_min: 11 # K/uL
+    value_min_inclusive: False
+    value_max: null
+  abnormally_high_wbc_2:
+    code: LAB//LOINC//26511-6
+    value_min: 11 # K/uL
+    value_min_inclusive: False
+    value_max: null
+  wbc:
+    expr: or(wbc_1, wbc_2)
+  abnormally_high_wbc:
+    expr: or(abnormally_high_wbc_1, abnormally_high_wbc_2)
 
-  # map_mmhg:
-  #   code: { any: ["LAB//320050//mmHg", "LAB//320051//mmHg"] }
+  # Thrombocytopenia task predicates
+  platelets:
+    code: LAB//LOINC//26515-7
+  # platelets_2:
+  #   code: LOINC//32623-1
+  # platelets_3:
+  #   code: LOINC//49497-1
+  # #   code: LAB//51265//K/uL
+  # platelets_4:
+  #   code: LOINC//26515-7
+
+  abnormally_low_platelets:
+    code: LOINC//777-3
+    value_min: null
+    value_max: 150 # K/uL
+    value_max_inclusive: False
+  # abnormally_low_platelets_2:
+  #   code: LOINC//32623-1
+  #   value_min: null
+  #   value_max: 150 # K/uL
+  #   value_max_inclusive: False
+  # abnormally_low_platelets_3:
+  #   code: LOINC//49497-1
+  #   value_min: null
+  #   value_max: 150 # K/uL
+  #   value_max_inclusive: False
+  # abnormally_low_platelets_4:
+  #   code: LOINC//26515-7
+  #   value_min: null
+  #   value_max: 150 # K/uL
+  #   value_max_inclusive: False
+  # abnormally_low_platelets_kul:
+  #   expr: or(abnormally_low_platelets_1, abnormally_low_platelets_2, abnormally_low_platelets_3, abnormally_low_platelets_4)
+
+  # Idiopathic thrombocytopenic purpura (disorder)
+  itp:
+    code: SNOMED//32273002//start
+  # Autoimmune thrombocytopenic purpura (disorder)
+  aitp:
+    code: SNOMED//128091003//start
+  diagnosed_thrombocytopenia:
+    expr: or(itp, aitp)
+
+  # Hypertension predicates
+  systolic_bp:
+    code: LOINC//8480-6
+  diastolic_bp:
+    code: LOINC//8462-4
+  abnormally_high_systolic_bp:
+    code: LOINC//8480-6
+    value_min: 130
+  abnormally_high_diastolic_bp:
+    code: LOINC//8462-4
+    value_min: 80
+  abnormally_high_bp:
+    expr: or(abnormally_high_systolic_bp, abnormally_high_diastolic_bp)
+
+  # Acute Kidney Injury predicates
+  aki_1:
+    code: SNOMED//14669001//start
+  aki_2:
+    code: SNOMED//298015003//start
+  aki_3:
+    code: SNOMED//35455006//start
+  acute_kidney_injury:
+    expr: or(aki_1, aki_2, aki_3)
+  # aki:
+  #   code: { regex: "SNOMED//(14669001|298015003|35455006)//start" }
+  # Hyperkalemia predicates
+  potassium_1:
+    code: LOINC//2823-3
+  potassium_2:
+    code: LOINC//6298-4 #Potassium [Moles/volume] in Blood
+  potassium:
+    expr: or(potassium_1, potassium_2)
+
+  abnormally_high_potassium_1:
+    code: LOINC//2823-3
+    value_min: 5.0 # mEq/L
+    value_min_inclusive: True
+    value_max: null
+  abnormally_high_potassium_2:
+    code: LOINC//6298-4 #Potassium [Moles/volumeplate] in Blood
+    value_min: 5.0 # mEq/L
+    value_min_inclusive: True
+    value_max: null
+  abnormally_high_potassium:
+    expr: or(abnormally_high_potassium_1, abnormally_high_potassium_2)
+
+  diagnosed_hypokalemia:
+    code: SNOMED//433144002//start # Hypokalemia (disorder)
+
+  diagnosed_hyperkalemia:
+    code: SNOMED//237602007//start # Hyperkalemia (disorder)
+
+  # Hypoglycemia predicates
+  glucose_1:
+    code: LAB//LOINC//2345-7 # Glucose [Mass/volume] in serum or Plasma
+  glucose_2:
+    code: LOINC//2339-0 # Glucose [Mass/volume] in Blood
+  glucose_3:
+    code: LOINC//5792-7 # Glucose [Mass/volume] in Urine by Test strip
+
+  abnormally_low_glucose_1:
+    code: LOINC//2345-7 # Glucose [Mass/volume] in Blood
+    value_min: null
+    value_max: 70.2 # mg/dL
+    value_max_inclusive: False
+  abnormally_low_glucose_2:
+    code: LOINC//2339-0 # Glucose [Mass/volume]
+    value_min: null
+    value_max: 70.2 # mg/dL
+    value_max_inclusive: False
+  abnormally_low_glucose_3:
+    code: LOINC//5792-7 # Glucose [Mass/volume] in Urine by Test strip
+    value_min: null
+    value_max: 70.2 # mg/dL
+    value_max_inclusive: False
+
+  glucose:
+    expr: or(glucose_1, glucose_2, glucose_3)
+
+  abnormally_low_glucose:
+    expr: or(abnormally_low_glucose_1, abnormally_low_glucose_2, abnormally_low_glucose_3)
+# TODO: Add hypotension based on MAP
+# map_1:
+#   code: MEASURE//ABP gemiddeld//mmHg
+# map_2:
+#   code: MEASURE//Niet invasieve bloeddruk gemiddeld//mmHg
+# # map_3:
+# #   code: LAB//225312//mmHg
+# abnormally_low_map_1:
+#   code: MEASURE//ABP gemiddeld//mmHg
+#   value_min: null
+#   value_max: 65 # mmHg
+#   value_max_inclusive: False
+# abnormally_low_map_2:
+#   code: MEASURE//Niet invasieve bloeddruk gemiddeld//mmHg
+#   value_min: null
+#   value_max: 65 # mmHg
+#   value_max_inclusive: False
+# # abnormally_low_map_3:
+# #   code: LAB//225312//mmHg
+# #   value_min: null
+# #   value_max: 65 # mmHg
+# #   value_max_inclusive: False
+# map:
+#   expr: or(map_1, map_2)
+# abnormally_low_map:
+#   expr: or(abnormally_low_map_1, abnormally_low_map_2)

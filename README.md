@@ -64,6 +64,10 @@ clone your fork, and then install the repository locally in "editable" mode via 
 This will let you prepare your PR code and run the tests to ensure your contributions are valid and
 transportable across MEDS-DEV datasets and tasks.
 
+> [!NOTE]
+> The current Python version supported by MEDS-DEV is Python 3.11. Please ensure you have Python 3.11 installed
+> as you might encounter compatibility issues with other versions.
+
 ## Using Existing MEDS-DEV Datasets, Tasks, or Models
 
 To reproduce a MEDS-DEV result (or transport a MEDS-DEV result to your local dataset), you will generally need
@@ -96,7 +100,8 @@ want to store the final, MEDS-formatted dataset.
 
 > [!NOTE]
 > Note that you can also specify `demo=True` to build a demo version of this dataset (if supported) for ease
-> of testing the pipeline and your downstream code.
+> of testing the pipeline and your downstream code. If your dataset is behind credentials, also be sure to provide them.
+> e.g., for MIMIC-IV: export DATASET_DOWNLOAD_USERNAME="" and export DATASET_DOWNLOAD_PASSWORD=
 
 > [!NOTE]
 > Note that here, `$DATASET_NAME` is the entire, slash-separated path from `src/MEDS_DEV/datasets/` to the

@@ -1,0 +1,37 @@
+metadata:
+  description:
+    Prediction task for alcohol use disorder and related conditions following
+    hospital discharge
+  links: []
+  contacts:
+    - name: Robin van de Water
+      github_username: rvandewater
+  supported_datasets:
+    - MIMIC-IV
+predicates:
+  hospital_admission: ???
+  hospital_discharge: ???
+  alcohol_use_disorder:
+    code:
+      regex: F10|G31.2|G40.51|G62.1|G72.1|I42.6|K29.2|K70|K85.2|K86.0|O35.4|P04.3|Q86.0|Z71.4|E24.4|T51
+trigger: hospital_discharge
+windows:
+  input:
+    start: end <- hospital_admission
+    end: trigger
+    start_inclusive: false
+    end_inclusive: true
+    index_timestamp: end
+  gap:
+    start: trigger
+    end: start + 365 days
+    start_inclusive: false
+    end_inclusive: true
+    has:
+      alcohol_use_disorder: (None, 0)
+  target:
+    start: gap.end
+    end: start + 1095 days
+    start_inclusive: false
+    end_inclusive: true
+    label: alcohol_use_disorder

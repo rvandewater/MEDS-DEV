@@ -21,16 +21,16 @@ conda activate meds_dev_311
 
 export MODEL_NAME="meds_tab/tiny"
 export MODEL_NAME="genhpf"
-export MODEL_NAME="cehrbert"
+# export MODEL_NAME="cehrbert"
 export datasets=(
     # "AUMCdb"
-    # "eICU"
-    "EHRShot"
-    # "HIRID"
-    # "INSPIRE"
+    "eICU"
+    # "EHRShot"
+    "HIRID"
+    "INSPIRE"
     # "MIMIC-IV"
-    "NWICU"
-    "SICdb"
+    # "NWICU"
+    # "SICdb"
 )
 export base_dir="/sc/home/robin.vandewater/datasets/meds"
 export tasks=(
@@ -44,7 +44,10 @@ export tasks=(
     "mortality/in_icu/first_24h"
     # "readmission/general_hospital/30d"
 )
-# export datasets=("HIRID")
+export tasks=(
+    "mortality/in_icu/first_24h"
+)
+export datasets=("HIRID")
 
 for dataset in "${datasets[@]}"; do
     export DATASET_NAME=$dataset
@@ -52,7 +55,7 @@ for dataset in "${datasets[@]}"; do
     if [ "$MODEL_NAME" != "meds_tab/tiny" ]; then
         # First pretrain the model
         export PRETRAINED_MODEL_DIR="$DATASET_DIR/models/$MODEL_NAME"
-        meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" mode=train dataset_type=unsupervised output_dir="$PRETRAINED_MODEL_DIR"
+        # meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" mode=train dataset_type=unsupervised output_dir="$PRETRAINED_MODEL_DIR"
         for task in "${tasks[@]}"; do
             echo "Processing dataset: $DATASET_NAME, task: $task"
             export TASK_NAME=$task
