@@ -21,7 +21,7 @@ conda activate meds_dev_311
 
 export MODEL_NAME="meds_tab/tiny"
 export MODEL_NAME="genhpf"
-export MODEL_NAME="cehrbert"
+# export MODEL_NAME="cehrbert"
 export datasets=(
     # "AUMCdb"
     # "eICU"
@@ -44,10 +44,10 @@ export tasks=(
     "mortality/in_icu/first_24h"
     # "readmission/general_hospital/30d"
 )
-export tasks=(
-    "mortality/in_icu/first_24h"
-)
-# export datasets=("HIRID")
+# export tasks=(
+#     "mortality/in_icu/first_24h"
+# )
+export datasets=("HIRID")
 
 for dataset in "${datasets[@]}"; do
     export DATASET_NAME=$dataset
