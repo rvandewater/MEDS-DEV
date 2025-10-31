@@ -30,7 +30,7 @@ predicates:
     value_max: null
   creatinine:
     expr: or(creatinine_1, creatinine_2)
-  abnormally_high_creatinine:
+  abnormally_high_creatinine_mg_dl:
     expr: or(abnormally_high_creatinine_1, abnormally_high_creatinine_2)
 
   sodium_1:

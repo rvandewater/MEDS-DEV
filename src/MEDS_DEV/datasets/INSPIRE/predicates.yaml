@@ -1,8 +1,8 @@
 predicates:
   hospital_admission:
-    code: { regex: "^ADMISSION*" }
+    code: { regex: "^ICU_ADMISSION*" }
   hospital_discharge:
-    code: { regex: "^HOSPITAL_DISCHARGE*" }
+    code: { regex: "^ICU_DISCHARGE*" }
 
   # ED_registration:
   #   code: { regex: "^ED_REGISTRATION//.*" }
@@ -14,33 +14,89 @@ predicates:
   icu_discharge:
     code: { regex: "^ICU_DISCHARGE*" }
 
-  creatinine_mgdl:
-    code: { any: ["LAB//mg/dL//creatinine"] }
+  creatinine:
+    code: "LAB//mg/dL//creatinine"
+  abnormally_high_creatinine_mg_dL:
+    code: "LAB//mg/dL//creatinine"
+    value_min: 1.3 # mg/dL
+    value_min_inclusive: False
+    value_max: null
 
   #TODO: convert units from mmol/L to mg/dL
-  sodium_meql:
-    code: { any: ["LAB//mmol/L//sodium"] }
+  sodium:
+    code: "LAB//sodium//mmol/L"
+  abnormally_low_sodium:
+    code: "LAB//sodium//mmol/L"
+    value_min: null
+    value_max: 135 # mEq/L = mmol/L for sodium
+    value_max_inclusive: False
 
   # bicarbonate_meql:
   #   code: { any: ["LAB//227443//mEq/L", "LAB//50882//mEq/L"] }
+  # Metabolic Acidosis task predicates
+  # No bicarbonate available in INSPIRE dataset? Check with INSPIRE team.
 
-  # hemoglobin_gdl:
-  #   code: { any: ["LAB//100007//g/dl"] }
+  # Anemia task predicates
+  hemoglobin:
+    code: "LAB//hb//g/dL"
+  abnormally_low_hemoglobin:
+    code: "LAB//hb//g/dL"
+    value_min: null
+    value_max: 13 # g/dL
+    value_max_inclusive: False
 
-  wbc_kul:
-    code: { any: ["LAB///nL//wbc"] }
+  # Leukocytosis task predicates
+  wbc:
+    code: "LAB//wbc///nL"
+  abnormally_high_wbc:
+    code: "LAB//wbc///nL"
+    value_min: 11 # K/uL
+    value_min_inclusive: False
+    value_max: null
 
-  platelets_kul:
-    code: { any: ["LAB///nL//platelet"] }
+  # Thrombocytopenia task predicates
+  platelets:
+    code: "LAB//platelet///nL"
 
-  map_mmhg:
-    code:
-      {
-        any:
-          [
-            "VITAL//pap_mbp//mmHg",
-            "VITAL//nibp_mbp//mmHg",
-            "VITAL//art_mbp//mmHg",
-            "WARD_VITAL//mmHg//nibp_mbp",
-          ],
-      }
+  abnormally_low_platelets:
+    code: "LAB//platelet///nL"
+    value_min: null
+    value_max: 150 # nL = K/uL = 10^9/L
+    value_max_inclusive: False
+
+  # Hypotension task predicates
+  map_1:
+    code: VITAL//pap_mbp//mmHg
+  map_2:
+    code: VITAL//nibp_mbp//mmHg
+  map_3:
+    code: VITAL//art_mbp//mmHg
+  map_4:
+    code: WARD_VITAL//mmHg//nibp_mbp
+
+  abnormally_low_map_1:
+    code: VITAL//pap_mbp//mmHg
+    value_min: null
+    value_max: 65 # mmHg
+    value_max_inclusive: False
+  abnormally_low_map_2:
+    code: VITAL//nibp_mbp//mmHg
+    value_min: null
+    value_max: 65 # mmHg
+    value_max_inclusive: False
+  abnormally_low_map_3:
+    code: VITAL//art_mbp//mmHg
+    value_min: null
+    value_max: 65 # mmHg
+    value_max_inclusive: False
+  abnormally_low_map_4:
+    code: WARD_VITAL//mmHg//nibp_mbp
+    value_min: null
+    value_max: 65 # mmHg
+    value_max_inclusive: False
+
+  map:
+    expr: or(map_1, map_2, map_3, map_4)
+  abnormally_low_map:
+    expr: or(abnormally_low_map_1, abnormally_low_map_2, abnormally_low_map_3, abnormally_low_map_4)
+# predicates:

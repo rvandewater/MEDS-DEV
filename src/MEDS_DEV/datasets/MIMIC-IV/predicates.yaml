@@ -61,6 +61,7 @@ predicates:
 
   bicarbonate_1:
     code: LAB//227443//mEq/L
+  # bicarbonate in hosp
   bicarbonate_2:
     code: LAB//50882//mEq/L
   abnormally_low_bicarbonate_1:

@@ -9,17 +9,17 @@ predicates:
   icu_discharge:
     code: { regex: "^HOSPITAL_DISCHARGE.*" }
 
-  creatinine_1:
+  creatinine:
     code: OBSERVATION//Creatinine [Moles/volume] in Blood
-  abnormally_high_creatinine_1:
+  abnormally_high_creatinine_umol_l:
     code: OBSERVATION//Creatinine [Moles/volume] in Blood
-    value_min: 1.3 # mg/dL (TODO: convert units from umol/L to mg/dL)
+    value_min: 115 # 1.3 mg/dL
     value_min_inclusive: False
     value_max: null
-  creatinine:
-    expr: creatinine_1
-  abnormally_high_creatinine:
-    expr: abnormally_high_creatinine_1
+  # creatinine:
+  #   expr: creatinine_1
+  # abnormally_high_creatinine:
+  #   expr: abnormally_high_creatinine_1
 
   sodium_1:
     code: OBSERVATION//Sodium [Moles/volume] in Blood
@@ -76,17 +76,17 @@ predicates:
   abnormally_high_wbc:
     expr: or(abnormally_high_wbc_1, abnormally_high_wbc_2)
 
-  platelets_1:
+  platelets:
     code: OBSERVATION//Platelets [#/volume] in Blood
-  abnormally_low_platelets_1:
+  abnormally_low_platelets:
     code: OBSERVATION//Platelets [#/volume] in Blood
     value_min: null
     value_max: 150 # K/uL
     value_max_inclusive: False
-  platelets:
-    expr: platelets_1
-  abnormally_low_platelets:
-    expr: abnormally_low_platelets_1
+  # platelets:
+  #   expr: platelets_1
+  # abnormally_low_platelets:
+  #   expr: abnormally_low_platelets_1
 
   map_1:
     code: OBSERVATION//Non-invasive mean arterial pressure
