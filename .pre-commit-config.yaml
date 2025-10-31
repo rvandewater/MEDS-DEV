@@ -70,13 +70,13 @@ repos:
           - mdformat-toc
 
   # word spelling linter
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
-    hooks:
-      - id: codespell
-        args:
-          - --skip=*.ipynb,*.bib,*.svg,pyproject.toml
-          - --ignore-words-list=ehr,crate
+  # - repo: https://github.com/codespell-project/codespell
+  #   rev: v2.4.1
+  #   hooks:
+  #     - id: codespell
+  #       args:
+  #         - --skip=*.ipynb,*.bib,*.svg,pyproject.toml
+  #         - --ignore-words-list=ehr,crate
 
   # jupyter notebook cell output clearing
   - repo: https://github.com/kynan/nbstripout

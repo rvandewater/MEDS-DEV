@@ -9,96 +9,93 @@ predicates:
   icu_discharge:
     code: { regex: "^HOSPITAL_DISCHARGE.*" }
 
+  # Elevated Creatinine task predicates
   creatinine:
-    code: OBSERVATION//Creatinine [Moles/volume] in Blood
+    code: OBSERVATION//Creatinine [Moles/volume] in Blood//umol/l
   abnormally_high_creatinine_umol_l:
-    code: OBSERVATION//Creatinine [Moles/volume] in Blood
+    code: OBSERVATION//Creatinine [Moles/volume] in Blood//umol/l
     value_min: 115 # 1.3 mg/dL
     value_min_inclusive: False
     value_max: null
-  # creatinine:
-  #   expr: creatinine_1
-  # abnormally_high_creatinine:
-  #   expr: abnormally_high_creatinine_1
-
-  sodium_1:
-    code: OBSERVATION//Sodium [Moles/volume] in Blood
-  abnormally_low_sodium_1:
-    code: OBSERVATION//Sodium [Moles/volume] in Blood
-    value_min: null
-    value_max: 135 # mEq/L
-    value_max_inclusive: False
+  # Hyponatremia task predicates
   sodium:
-    expr: sodium_1
+    code: OBSERVATION//Sodium [Moles/volume] in Blood//mmol/l
   abnormally_low_sodium:
-    expr: abnormally_low_sodium_1
-
-  bicarbonate_1:
-    code: OBSERVATION//Bicarbonate [Moles/volume] in Arterial blood
-  abnormally_low_bicarbonate_1:
-    code: OBSERVATION//Bicarbonate [Moles/volume] in Arterial blood
+    code: OBSERVATION//Sodium [Moles/volume] in Blood//mmol/l
     value_min: null
-    value_max: 22 # mEq/L
+    value_max: 135 # mEq/L = mmol/L for sodium
     value_max_inclusive: False
-  bicarbonate:
-    expr: bicarbonate_1
-  abnormally_low_bicarbonate:
-    expr: abnormally_low_bicarbonate_1
 
-  hemoglobin_1:
-    code: OBSERVATION//Hemoglobin [Mass/volume] in Arterial blood
-  abnormally_low_hemoglobin_1:
-    code: OBSERVATION//Hemoglobin [Mass/volume] in Arterial blood
+  # Metabolic Acidosis task predicates
+  bicarbonate:
+    code: OBSERVATION//Bicarbonate [Moles/volume] in Arterial blood//mmol/l
+  abnormally_low_bicarbonate:
+    code: OBSERVATION//Bicarbonate [Moles/volume] in Arterial blood//mmol/l
     value_min: null
-    value_max: 13 # g/dL
+    value_max: 22 # mEq/L = mmol/L for bicarbonate
+    value_max_inclusive: False
+
+  # Anemia task predicates. Conversion from g/dL to mmol/L: 1 g/dL = 0.6206 mmol/L, so 13 g/dL = 8.066 mmol/L
+  hemoglobin_1:
+    code: OBSERVATION//Hemoglobin [Mass/volume] in Blood//g/l
+  hemoglobin_2:
+    code: OBSERVATION//Hemoglobin [Mass/volume] in Blood//g/l
+  abnormally_low_hemoglobin_1:
+    code: OBSERVATION//Hemoglobin [Mass/volume] in Blood//g/l
+    value_min: null
+    value_max: 8 # mmol/L
+    value_max_inclusive: False
+  abnormally_low_hemoglobin_2:
+    code: OBSERVATION//Hemoglobin [Mass/volume] in Blood//g/l
+    value_min: null
+    value_max: 8 # mmol/L
     value_max_inclusive: False
   hemoglobin:
-    expr: hemoglobin_1
+    expr: or(hemoglobin_1, hemoglobin_2)
   abnormally_low_hemoglobin:
-    expr: abnormally_low_hemoglobin_1
+    expr: or(abnormally_low_hemoglobin_1, abnormally_low_hemoglobin_2)
 
-  wbc_1:
-    code: OBSERVATION//Leukocytes [#/volume] in Blood
-  wbc_2:
-    code: OBSERVATION//Band form neutrophils/100 leukocytes in Blood
-  abnormally_high_wbc_1:
-    code: OBSERVATION//Leukocytes [#/volume] in Blood
-    value_min: 11 # K/uL
-    value_min_inclusive: False
-    value_max: null
-  abnormally_high_wbc_2:
-    code: OBSERVATION//Band form neutrophils/100 leukocytes in Blood
-    value_min: 11 # K/uL
-    value_min_inclusive: False
-    value_max: null
+  # Leukocytosis task predicates
   wbc:
-    expr: or(wbc_1, wbc_2)
+    code: OBSERVATION//Leukocytes [#/volume] in Blood//G/l
+  # wbc_2:
+  #   code: OBSERVATION//Band form neutrophils/100 leukocytes in Blood//%
   abnormally_high_wbc:
-    expr: or(abnormally_high_wbc_1, abnormally_high_wbc_2)
+    code: OBSERVATION//Leukocytes [#/volume] in Blood//G/l
+    value_min: 11 # K/uL
+    value_min_inclusive: False
+    value_max: null
+  # abnormally_high_wbc_2:
+  #   code: OBSERVATION//Band form neutrophils/100 leukocytes in Blood//%
+  #   value_min: 11 # K/uL
+  #   value_min_inclusive: False
+  #   value_max: null
+  # wbc:
+  #   expr: or(wbc_1, wbc_2)
+  # abnormally_high_wbc:
+  #   expr: or(abnormally_high_wbc_1, abnormally_high_wbc_2)
 
+  # Thrombocytopenia task predicates
   platelets:
-    code: OBSERVATION//Platelets [#/volume] in Blood
+    code: OBSERVATION//Platelets [#/volume] in Blood//G/l
   abnormally_low_platelets:
-    code: OBSERVATION//Platelets [#/volume] in Blood
+    code: OBSERVATION//Platelets [#/volume] in Blood//G/l
     value_min: null
     value_max: 150 # K/uL
     value_max_inclusive: False
-  # platelets:
-  #   expr: platelets_1
-  # abnormally_low_platelets:
-  #   expr: abnormally_low_platelets_1
 
+  # Hypotension task predicates
   map_1:
-    code: OBSERVATION//Non-invasive mean arterial pressure
+    code: OBSERVATION//Non-invasive mean arterial pressure//mmHg
   map_2:
-    code: OBSERVATION//Invasive mean arterial pressure
+    code: OBSERVATION//Invasive mean arterial pressure//mmHg
   abnormally_low_map_1:
-    code: OBSERVATION//Non-invasive mean arterial pressure
+    code: OBSERVATION//Non-invasive mean arterial pressure//mmHg
     value_min: null
     value_max: 65 # mmHg
     value_max_inclusive: False
   abnormally_low_map_2:
-    code: OBSERVATION//Invasive mean arterial pressure
+    code: OBSERVATION//Invasive mean arterial pressure//mmHg
     value_min: null
     value_max: 65 # mmHg
     value_max_inclusive: False
@@ -106,48 +103,125 @@ predicates:
     expr: or(map_1, map_2)
   abnormally_low_map:
     expr: or(abnormally_low_map_1, abnormally_low_map_2)
-# predicates:
-#   hospital_admission:
-#     code: { regex: "^HOSPITAL_ADMISSION*" }
-#   hospital_discharge:
-#     code: { regex: "^HOSPITAL_DISCHARGE*" }
-
-#   icu_admission:
-#     code: { regex: "^HOSPITAL_ADMISSION.*" }
-#   icu_discharge:
-#     code: { regex: "^HOSPITAL_DISCHARGE.*" }
-
-#   creatinine_mgdl:
-#     code: { any: ["OBSERVATION//Creatinine [Moles/volume] in Blood"] }
-#   # Todo: convert units from umol/L to mg/dL
-#   sodium_meql:
-#     code: { any: ["OBSERVATION//Sodium [Moles/volume] in Blood"] }
-
-#   bicarbonate_meql:
-#     code: { any: ["OBSERVATION//Bicarbonate [Moles/volume] in Arterial blood"] }
-
-#   hemoglobin_gdl:
-#     code: { any: ["OBSERVATION//Hemoglobin [Mass/volume] in Arterial blood"] }
-
-#   wbc_kul:
-#     code:
-#       {
-#         any:
-#           [
-#             "OBSERVATION//Leukocytes [#/volume] in Blood",
-#             "OBSERVATION//Band form neutrophils/100 leukocytes in Blood",
-#           ],
-#       }
-
-#   platelets_kul:
-#     code: { any: ["OBSERVATION//Platelets [#/volume] in Blood"] }
-
-#   map_mmhg:
-#     code:
-#       {
-#         any:
-#           [
-#             "OBSERVATION//Non-invasive mean arterial pressure",
-#             "OBSERVATION//Invasive mean arterial pressure",
-#           ],
-#       }
+# Summary of OBSERVATION codes in HIRID dataset tuning:
+# │ OBSERVATION//ST elevation//mm                                                                         ┆ 8764769 │
+# │ OBSERVATION//Respiratory rate///min                                                                   ┆ 7880509 │
+# │ OBSERVATION//Heart rate///min                                                                         ┆ 6234555 │
+# │ OBSERVATION//Peripheral oxygen saturation//%                                                          ┆ 5906244 │
+# │ OBSERVATION//Invasive mean arterial pressure//mmHg                                                    ┆ 5510372 │
+# │ OBSERVATION//Invasive systolic arterial pressure//mmHg                                                ┆ 5506117 │
+# │ OBSERVATION//Invasive diastolic arterial pressure//mmHg                                               ┆ 5506108 │
+# │ OBSERVATION//Central venous pressure//mmHg                                                            ┆ 3800947 │
+# │ OBSERVATION//Fluid balance//cummulative                                                               ┆ 2564383 │
+# │ OBSERVATION//Infusion of saline solution//cummulative                                                 ┆ 2392345 │
+# │ OBSERVATION//End tidal carbon dioxide concentration//mmHg                                             ┆ 2386320 │
+# │ OBSERVATION//Metronidazole tabl 200 mg//UNK                                                           ┆ 2381951 │
+# │ OBSERVATION//Expiratory tidal volume//ml                                                              ┆ 2248583 │
+# │ OBSERVATION//Peak inspiratory pressure//cmH2O                                                         ┆ 2248029 │
+# │ OBSERVATION//Mean inspiratory airway pressure//cmH2O                                                  ┆ 2247785 │
+# │ OBSERVATION//Positive end expiratory pressure//cmH2O                                                  ┆ 2246666 │
+# │ OBSERVATION//Inspired oxygen concentration//%                                                         ┆ 2241654 │
+# │ OBSERVATION//Intravenous fluid colloid administration//cummulative                                    ┆ 2098905 │
+# │ OBSERVATION//Plateau pressure//cmH2O                                                                  ┆ 752131  │
+# │ OBSERVATION//Ventilator mode//Categorical                                                             ┆ 688041  │
+# │ OBSERVATION//Intracranial pressure//mmHg                                                              ┆ 662677  │
+# │ OBSERVATION//Core body temperature//°C                                                                ┆ 570612  │
+# │ OBSERVATION//Pulmonary artery mean pressure//mmHg                                                     ┆ 552697  │
+# │ OBSERVATION//Pulmonary artery diastolic pressure//mmHg                                                ┆ 549361  │
+# │ OBSERVATION//Pulmonary artery systolic pressure//mmHg                                                 ┆ 549334  │
+# │ OBSERVATION//Cardiac output//l/min                                                                    ┆ 516966  │
+# │ OBSERVATION//Mixed venous oxygen saturation//%                                                        ┆ 509834  │
+# │ OBSERVATION//Positive end expiratory pressure setting//cmH2O                                          ┆ 309647  │
+# │ OBSERVATION//Richmond agitation-sedation scale//Ordinal Score                                         ┆ 151511  │
+# │ OBSERVATION//Ventilator rate///min                                                                    ┆ 113980  │
+# │ OBSERVATION//Tidal volume setting//ml                                                                 ┆ 111573  │
+# │ OBSERVATION//Circadian rhythm//Categorical ['SR'; 'SB'; 'ST'; 'AF'; 'Nodal'; 'Paced'; 'PM'; 'AV bl (… ┆ 99396   │
+# │ OBSERVATION//Glasgow Coma Score eye opening subscore//Ordinal Score                                   ┆ 71618   │
+# │ OBSERVATION//Glasgow Coma Score verbal response subscore//Ordinal Score                               ┆ 71572   │
+# │ OBSERVATION//Glasgow Coma Score motor response subscore//Ordinal Score                                ┆ 71275   │
+# │ OBSERVATION//Hourly urine volume//ml/h                                                                ┆ 50943   │
+# │ OBSERVATION//Glucose [Moles/volume] in Serum or Plasma//mmol/l                                        ┆ 45985   │
+# │ OBSERVATION//Non-invasive mean arterial pressure//mmHg                                                ┆ 45244   │
+# │ OBSERVATION//Non-invasive diastolic arterial pressure//mmHg                                           ┆ 45132   │
+# │ OBSERVATION//Non-invasive systolic arterial pressure//mmHg                                            ┆ 45131   │
+# │ OBSERVATION//Oxygen administration by nasal cannula//l/min                                            ┆ 39743   │
+# │ OBSERVATION//Sodium [Moles/volume] in Blood//mmol/l                                                   ┆ 25879   │
+# │ OBSERVATION//Potassium [Moles/volume] in Blood//mmol/l                                                ┆ 25712   │
+# │ OBSERVATION//Axillary temperature//°C                                                                 ┆ 24687   │
+# │ OBSERVATION//Bicarbonate [Moles/volume] in Arterial blood//mmol/l                                     ┆ 23389   │
+# │ OBSERVATION//Base excess in Arterial blood by calculation//mmol/l                                     ┆ 23352   │
+# │ OBSERVATION//Oxygen saturation in Arterial blood//%                                                   ┆ 23312   │
+# │ OBSERVATION//Carboxyhemoglobin/Hemoglobin.total in Arterial blood//%                                  ┆ 23309   │
+# │ OBSERVATION//Methemoglobin/Hemoglobin.total in Arterial blood//%                                      ┆ 23304   │
+# │ OBSERVATION//Lactate [Mass/volume] in Arterial blood//mmol/l                                          ┆ 23285   │
+# │ OBSERVATION//Calcium.ionized [Moles/volume] in Blood//mmol/l                                          ┆ 23275   │
+# │ OBSERVATION//Chloride [Moles/volume] in Blood//mmol/l                                                 ┆ 22883   │
+# │ OBSERVATION//pH of Arterial blood//UNK                                                                ┆ 21741   │
+# │ OBSERVATION//Hemoglobin [Mass/volume] in Arterial blood//g/L                                          ┆ 21550   │
+# │ OBSERVATION//Oxygen [Partial pressure] in Arterial blood//mmHg                                        ┆ 21546   │
+# │ OBSERVATION//Carbon dioxide [Partial pressure] in Arterial blood//mmHg                                ┆ 21346   │
+# │ OBSERVATION//Ventilator Airway Code//Categorical                                                      ┆ 17686   │
+# │ OBSERVATION//Measurement of output from drain//ml                                                     ┆ 14804   │
+# │ OBSERVATION//Oxygen administration by mask//l/min                                                     ┆ 14701   │
+# │ OBSERVATION//Haemofiltration//UNK                                                                     ┆ 11476   │
+# │ OBSERVATION//Hemoglobin [Mass/volume] in Blood//g/l                                                   ┆ 10860   │
+# │ OBSERVATION//Leukocytes [#/volume] in Blood//G/l                                                      ┆ 10567   │
+# │ OBSERVATION//MCV [Entitic volume]//fl                                                                 ┆ 10539   │
+# │ OBSERVATION//MCHC [Mass/volume] in Cord blood//g/L                                                    ┆ 10532   │
+# │ OBSERVATION//MCH [Entitic mass]//pg                                                                   ┆ 10520   │
+# │ OBSERVATION//Platelets [#/volume] in Blood//G/l                                                       ┆ 10285   │
+# │ OBSERVATION//INR in Blood by Coagulation assay//UNK                                                   ┆ 8451    │
+# │ OBSERVATION//Creatinine [Moles/volume] in Blood//umol/l                                               ┆ 7692    │
+# │ OBSERVATION//C reactive protein [Mass/volume] in Serum or Plasma//mg/l                                ┆ 7383    │
+# │ OBSERVATION//Urea [Moles/volume] in Venous blood//mmol/l                                              ┆ 6570    │
+# │ OBSERVATION//Pulmonary artery wedge pressure//mmHg                                                    ┆ 6133    │
+# │ OBSERVATION//Phosphate [Moles/volume] in Blood//mmol/l                                                ┆ 5693    │
+# │ OBSERVATION//Magnesium [Moles/volume] in Blood//mmol/l                                                ┆ 5454    │
+# │ OBSERVATION//Creatine kinase panel - Serum or Plasma//U/l                                             ┆ 5007    │
+# │ OBSERVATION//Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma//U/l             ┆ 4168    │
+# │ OBSERVATION//Creatine kinase.MB [Mass/volume] in Serum or Plasma//U/l                                 ┆ 4083    │
+# │ OBSERVATION//Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma//U/l           ┆ 3826    │
+# │ OBSERVATION//Central venous oxygenation saturation//%                                                 ┆ 3668    │
+# │ OBSERVATION//Body weight//kg                                                                          ┆ 3489    │
+# │ OBSERVATION//Bilirubin.total [Moles/volume] in Serum or Plasma//umol/l                                ┆ 3159    │
+# │ OBSERVATION//Body height measure//cm                                                                  ┆ 3154    │
+# │ OBSERVATION//Neutrophils/100 leukocytes in Blood//%                                                   ┆ 2833    │
+# │ OBSERVATION//Lymphocytes [#/volume] in Blood//G/l                                                     ┆ 2823    │
+# │ OBSERVATION//Troponin T.cardiac [Mass/volume] in Serum or Plasma by High sensitivity method//ng/l     ┆ 2496    │
+# │ OBSERVATION//APACHE II Group//UNK                                                                     ┆ 2156    │
+# │ OBSERVATION//Segmented neutrophils/100 leukocytes in Blood//%                                         ┆ 2134    │
+# │ OBSERVATION//Band form neutrophils/100 leukocytes in Blood//%                                         ┆ 2129    │
+# │ OBSERVATION//APACHE IV Group//UNK                                                                     ┆ 2025    │
+# │ OBSERVATION//aPTT in Blood by Coagulation assay//Sek                                                  ┆ 1813    │
+# │ OBSERVATION//Alkaline phosphatase [Enzymatic activity/volume] in Blood//U/l                           ┆ 1796    │
+# │ OBSERVATION//Gamma glutamyl transferase [Enzymatic activity/volume] in Serum or Plasma//U/l           ┆ 1622    │
+# │ OBSERVATION//Troponin T.cardiac [Mass/volume] in Serum or Plasma//ng/l                                ┆ 1209    │
+# │ OBSERVATION//Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay//g/L               ┆ 1115    │
+# │ OBSERVATION//Train of four count//Ordinal Score                                                       ┆ 928     │
+# │ OBSERVATION//Lactate [Moles/volume] in Venous blood//mmol/l                                           ┆ 864     │
+# │ OBSERVATION//Rectal temperature//°C                                                                   ┆ 726     │
+# │ OBSERVATION//Sodium [Moles/volume] in Urine//mmol/l                                                   ┆ 710     │
+# │ OBSERVATION//Ammonia [Moles/volume] in Blood//umol/l                                                  ┆ 535     │
+# │ OBSERVATION//Albumin [Mass/volume] in Serum or Plasma//g/L                                            ┆ 471     │
+# │ OBSERVATION//Calcium [Moles/volume] in Blood//mmol/l                                                  ┆ 471     │
+# │ OBSERVATION//Amylase [Enzymatic activity/volume] in Serum or Plasma//U/l                              ┆ 454     │
+# │ OBSERVATION//Creatinine [Moles/volume] in Urine//umol/l                                               ┆ 420     │
+# │ OBSERVATION//Lipase [Enzymatic activity/volume] in Serum or Plasma//U/l                               ┆ 382     │
+# │ OBSERVATION//Bilirubin.direct [Mass/volume] in Serum or Plasma//umol/l                                ┆ 352     │
+# │ OBSERVATION//Urea [Moles/volume] in Urine//mmol/l                                                     ┆ 336     │
+# │ OBSERVATION//Lactate [Moles/volume] in Cerebral spinal fluid//mmol/l                                  ┆ 268     │
+# │ OBSERVATION//Coagulation factor V activity actual/normal in Platelet poor plasma by Coagulation assa… ┆ 236     │
+# │ OBSERVATION//Coagulation factor X activity actual/normal in Platelet poor plasma by Coagulation assa… ┆ 233     │
+# │ OBSERVATION//Thyrotropin [Units/volume] in Serum or Plasma//mU/l                                      ┆ 232     │
+# │ OBSERVATION//Coagulation factor VII activity actual/normal in Platelet poor plasma by Coagulation as… ┆ 231     │
+# │ OBSERVATION//Glucose [Moles/volume] in Cerebral spinal fluid//mmol/l                                  ┆ 231     │
+# │ OBSERVATION//Prothrombin activity actual/normal in Platelet poor plasma by Coagulation assay//%       ┆ 220     │
+# │ OBSERVATION//Procalcitonin [Mass/volume] in Serum or Plasma//ug/l                                     ┆ 152     │
+# │ OBSERVATION//Cortisol [Moles/volume] in Serum or Plasma//nmol/l                                       ┆ 139     │
+# │ OBSERVATION//Amylase [Enzymatic activity/volume] in Body fluid//U/l                                   ┆ 74      │
+# │ OBSERVATION//pH of Body fluid//UNK                                                                    ┆ 60      │
+# │ OBSERVATION//Natriuretic peptide.B prohormone N-Terminal [Mass/volume] in Serum or Plasma//pg/ml      ┆ 58      │
+# │ OBSERVATION//Ferritin [Mass/volume] in Blood//ug/l                                                    ┆ 51      │
+# │ OBSERVATION//pH of Cerebral spinal fluid//UNK                                                         ┆ 27      │
+# │ OBSERVATION//Noroxin tabl 400 mg//UNK                                                                 ┆ 24      │
+# │ OBSERVATION//Erythrocyte sedimentation rate//mm/1h
