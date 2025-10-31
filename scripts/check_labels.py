@@ -24,7 +24,7 @@ def aggregate_labels(directory):
                 split = parts[-2]  # split is 2 levels up
                 df = pl.read_parquet(path)
                 df = df.with_columns(pl.lit(task).alias("task"), pl.lit(split).alias("split"))
-                print(f"Loaded {path} with shape {df.shape}, task={task}, split={split}")
+                # print(f"Loaded {path} with shape {df.shape}, task={task}, split={split}")
                 dfs.append(df)
     if dfs:
         # Concatenate all DataFrames vertically (assuming same schema)
@@ -63,7 +63,7 @@ all_dataset_tasks = process_labels()
 
 for item in all_dataset_tasks:
     print(item)
-with pl.Config(tbl_rows=100, tbl_cols=10, fmt_str_lengths=1000, tbl_width_chars=1000):
+with pl.Config(tbl_rows=1000, tbl_cols=10, fmt_str_lengths=1000, tbl_width_chars=1000):
     # for col in all_dataset_tasks.get_column_names():
     #     if col not in ["task", "split", "boolean_value", "dataset"]:
     #         all_dataset_tasks = all_dataset_tasks.with_columns(
