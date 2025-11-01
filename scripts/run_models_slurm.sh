@@ -8,7 +8,11 @@
 #SBATCH --account=sci-lippert
 #SBATCH --time=120:00:00 # -t
 # run with: sbatch run_models_slurm.sh cehrbert HIRID MIMIC-IV
-eval "$(conda shell.bash hook)"
+
+# eval "$(conda shell.bash hook)"
+# shellcheck disable=SC1091
+source /sc/home/robin.vandewater/conda3/etc/profile.d/conda.sh
+
 cd ~/projects/MEDS_DEV_NEW || exit
 conda activate meds_dev_311
 
@@ -40,16 +44,7 @@ for dataset in "$@"; do
         exit 1
     fi
 done
-# export datasets=(
-#     "AUMCdb"
-#     # "eICU"
-#     # "EHRShot"
-#     "HIRID"
-#     "INSPIRE"
-#     "MIMIC-IV"
-#     "NWICU"
-#     "SICdb"
-# )
+
 export base_dir="/sc/home/robin.vandewater/datasets/meds"
 export tasks=(
     "abnormal_lab/cbc/leukocytosis/first_24h"
@@ -60,11 +55,9 @@ export tasks=(
     "abnormal_lab/blood_chemistry/hyponatremia/first_24h"
     "abnormal_lab/blood_chemistry/elevated_creatinine/first_24h"
     "mortality/in_icu/first_24h"
-    # "readmission/general_hospital/30d"
+    "readmission/general_hospital/30d"
 )
-# export tasks=(
-#     "mortality/in_icu/first_24h"
-# )
+
 
 for dataset in "${datasets[@]}"; do
     export DATASET_NAME=$dataset
