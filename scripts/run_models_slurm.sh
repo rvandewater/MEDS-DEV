@@ -1,5 +1,4 @@
 #!/bin/bash
-#SBATCH --job-name=meds_dev_experiments # -J
 #SBATCH --partition=gpu # -p
 #SBATCH --cpus-per-task=16 # -c
 #SBATCH --mem=200gb
@@ -7,6 +6,7 @@
 #SBATCH --output=logs/%x_%j.log # %x is job-name, %j is job id
 #SBATCH --account=sci-lippert
 #SBATCH --time=120:00:00 # -t
+#SBATCH --gres=gpus:a40:1
 # run with: sbatch run_models_slurm.sh cehrbert HIRID MIMIC-IV
 eval "$(conda shell.bash hook)"
 cd ~/projects/MEDS_DEV_NEW || exit
