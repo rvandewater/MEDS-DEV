@@ -1,12 +1,20 @@
 #!/bin/bash
-#SBATCH --job-name=meds_dev_experiments # -J
-#SBATCH --partition=gpu # -p
-#SBATCH --cpus-per-task=16 # -c
-#SBATCH --mem=200gb
-#SBATCH --gpus=1
-#SBATCH --output=logs/%x_%j.log # %x is job-name, %j is job id
-#SBATCH --account=sci-lippert
-#SBATCH --time=120:00:00 # -t
+# SBATCH --job-name=meds_dev_experiments # -J
+# SBATCH --partition=cpu # -p
+# SBATCH --cpus-per-task=16 # -c
+# SBATCH --mem=200gb
+# SBATCH --output=../%x/%x_%j.log # %x is job-name, %j is job id
+# SBATCH --account=sci-lippert
+# SBATCH --time=120:00:00 # -t
+    #!/bin/bash
+    #SBATCH --job-name=meds_dev_experiments # -J
+    #SBATCH --partition=gpu # -p
+    #SBATCH --cpus-per-task=16 # -c
+    #SBATCH --mem=200gb
+    #SBATCH --gpus=1
+    #SBATCH --output=logs/%x_%j.log # %x is job-name, %j is job id
+    #SBATCH --account=sci-lippert
+    #SBATCH --time=120:00:00 # -t
     # !/bin/bash
     # SBATCH --job-name=meds_dev_experiments # -J
     # SBATCH --partition=cpu # -p
@@ -20,8 +28,8 @@ eval "$(conda shell.bash hook)"
 cd ~/projects/MEDS_DEV_NEW || exit
 conda activate meds_dev_311
 
-# export MODEL_NAME="meds_tab/tiny"
-export MODEL_NAME="genhpf"
+export MODEL_NAME="meds_tab/tiny"
+# export MODEL_NAME="genhpf"
 # export MODEL_NAME="cehrbert"
 # AVAILABLE_MODELS=("meds_tab/tiny" "cehrbert" "genhpf")
 
