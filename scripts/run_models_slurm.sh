@@ -3,15 +3,16 @@
 #SBATCH --cpus-per-task=16 # -c
 #SBATCH --mem=200gb
 #SBATCH --gpus=1
-#SBATCH --gpus=v100:1 #a40:1
+#SBATCH --gpus=v100:1
 #SBATCH --output=logs/%x_%j.log # %x is job-name, %j is job id
 #SBATCH --account=sci-lippert
 #SBATCH --time=120:00:00 # -t
+
 # run with: sbatch run_models_slurm.sh cehrbert HIRID MIMIC-IV
 
-# eval "$(conda shell.bash hook)"
-# shellcheck disable=SC1091
-source /sc/home/robin.vandewater/conda3/etc/profile.d/conda.sh
+# Initialize conda:
+eval "$(conda shell.bash hook)"
+
 
 cd ~/projects/MEDS_DEV_NEW || exit
 conda activate meds_dev_311
