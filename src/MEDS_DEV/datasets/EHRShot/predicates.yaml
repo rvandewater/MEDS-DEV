@@ -11,7 +11,7 @@ predicates:
     code: { regex: r"STANFORD_VISIT//.+//end" }
 
   death:
-    code: "Condition Type/OMOP4822053"
+    code: { regex: "MEDS_DEATH.*" }
   # hospital_discharge:
   #   code: "Visit/DP"
   # ICU visit details - care sites with ICU designation
