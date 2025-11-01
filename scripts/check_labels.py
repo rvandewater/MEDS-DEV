@@ -60,6 +60,7 @@ def process_labels():
 
 # Execute the function
 all_dataset_tasks = process_labels()
+all_dataset_tasks.write_parquet("all_dataset_tasks.parquet")
 
 for item in all_dataset_tasks:
     print(item)
