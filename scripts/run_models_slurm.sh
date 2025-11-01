@@ -31,9 +31,20 @@ conda activate meds_dev_311
 export MODEL_NAME="meds_tab/tiny"
 # export MODEL_NAME="genhpf"
 # export MODEL_NAME="cehrbert"
-# AVAILABLE_MODELS=("meds_tab/tiny" "cehrbert" "genhpf")
+AVAILABLE_MODELS=("meds_tab/tiny" "cehrbert" "genhpf")
 
+# Validate and parse arguments
+if [ "$#" -lt 2 ]; then
+    echo "Usage: $0 <MODEL_NAME> <DATASET_1> [<DATASET_2> ...]"
+    exit 1
+fi
 
+export MODEL_NAME=$1
+if [[ ! " ${AVAILABLE_MODELS[*]} " =~ ${MODEL_NAME} ]]; then
+    echo "Error: Invalid MODEL_NAME '${MODEL_NAME}'. Available models are: ${AVAILABLE_MODELS[*]}"
+    exit 1
+fi
+shift # Remove MODEL_NAME from arguments
 AVAILABLE_DATASETS=("AUMCdb" "eICU" "EHRShot" "HIRID" "INSPIRE" "MIMIC-IV" "NWICU" "SICdb")
 # Validate input datasets
 export datasets=()
@@ -67,9 +78,9 @@ export tasks=(
     "mortality/in_icu/first_24h"
     # "readmission/general_hospital/30d"
 )
-export tasks=(
-    "mortality/in_icu/first_24h"
-)
+# export tasks=(
+#     "mortality/in_icu/first_24h"
+# )
 
 for dataset in "${datasets[@]}"; do
     export DATASET_NAME=$dataset
