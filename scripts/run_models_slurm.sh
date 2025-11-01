@@ -13,9 +13,19 @@
 # Initialize conda:
 eval "$(conda shell.bash hook)"
 
+# Initialize conda - use the correct path to conda.sh
+
+# shellcheck disable=SC1091
+source /sc/home/robin.vandewater/conda3/etc/profile.d/conda.sh
 
 cd ~/projects/MEDS_DEV_NEW || exit
 conda activate meds_dev_311
+
+# Verify conda activation
+if [ -z "$CONDA_DEFAULT_ENV" ]; then
+    echo "Error: Failed to activate conda environment"
+    exit 1
+fi
 
 export MODEL_NAME="meds_tab/tiny"
 # export MODEL_NAME="genhpf"
