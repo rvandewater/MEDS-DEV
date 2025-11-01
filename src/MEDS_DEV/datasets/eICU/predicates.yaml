@@ -50,7 +50,7 @@ predicates:
     value_min: null
     value_max: 22 # mEq/L
     value_max_inclusive: False
-
+  # Anemia task predicates
   hemoglobin:
     code: LAB//Hgb//g/dL
   # hemoglobin_2:
@@ -79,6 +79,7 @@ predicates:
     value_min_inclusive: False
     value_max: null
 
+  # Thrombocytopenia task predicates
   platelets:
     code: LAB//platelets x 1000//K/mcL
   abnormally_low_platelets:
@@ -87,6 +88,7 @@ predicates:
     value_max: 150 # K/uL = nL = 10^9/L
     value_max_inclusive: False
 
+  # Hypotension task predicates
   map_1:
     code: VITALS//PERIODIC//BP//SYSTEMIC_MEAN
   map_2:

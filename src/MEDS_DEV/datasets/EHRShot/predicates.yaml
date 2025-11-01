@@ -204,7 +204,7 @@ predicates:
 
   platelets:
     expr: or(platelets_1, platelets_2, platelets_3)
-  abnormally_low_platelets_kul:
+  abnormally_low_platelets:
     expr: or(abnormally_low_platelets_1, abnormally_low_platelets_2, abnormally_low_platelets_3)
   # Idiopathic thrombocytopenic purpura (disorder)
   itp:
