@@ -11,7 +11,7 @@
 # run with: sbatch run_models_slurm.sh cehrbert HIRID MIMIC-IV
 
 # Initialize conda:
-eval "$(conda shell.bash hook)"
+# eval "$(conda shell.bash hook)"
 
 # Initialize conda - use the correct path to conda.sh
 
