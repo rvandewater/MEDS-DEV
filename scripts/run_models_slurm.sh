@@ -21,8 +21,8 @@ cd ~/projects/MEDS_DEV_NEW || exit
 conda activate meds_dev_311
 
 # export MODEL_NAME="meds_tab/tiny"
-# export MODEL_NAME="genhpf"
-export MODEL_NAME="cehrbert"
+export MODEL_NAME="genhpf"
+# export MODEL_NAME="cehrbert"
 # AVAILABLE_MODELS=("meds_tab/tiny" "cehrbert" "genhpf")
 
 
