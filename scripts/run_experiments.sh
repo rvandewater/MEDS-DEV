@@ -5,14 +5,14 @@ meds-dev-dataset dataset=$DATASET_NAME output_dir=$DATASET_DIR
 
 # Define the datasets and tasks
 export datasets=(
-    "AUMCdb"
-    "eICU"
-    "EHRShot"
-    "HIRID"
-    "INSPIRE"
+    # "AUMCdb"
+    # "eICU"
+    # "EHRShot"
+    # "HIRID"
+    # "INSPIRE"
     "MIMIC-IV"
-    "NWICU"
-    "SICdb"
+    # "NWICU"
+    # "SICdb"
 )
 
 export tasks=(
@@ -68,12 +68,18 @@ for dataset in "${datasets[@]}"; do
         export PREDICTIONS_DIR="$DATASET_DIR/predictions/$TASK_NAME/$MODEL_NAME"
         # Run the meds-dev-task command
         export PRETRAINED_MODEL_DIR="$DATASET_DIR/models/$MODEL_NAME"
-        if [ "$MODEL_NAME" != "meds_tab/tiny" ]; then
+        if [ "$MODEL_NAME" = "cehrbert" ]; then
             meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" mode=train dataset_type=unsupervised output_dir="$PRETRAINED_MODEL_DIR"
             meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$PRETRAINED_MODEL_DIR"
             meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=predict dataset_type=supervised split=held_out output_dir="$PREDICTIONS_DIR" model_initialization_dir="$FINETUNED_MODEL_DIR"
-        else
+        elif [ "$MODEL_NAME" = "genhpf" ]; then
             meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$PRETRAINED_MODEL_DIR"
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=predict dataset_type=supervised split=held_out output_dir="$PREDICTIONS_DIR" model_initialization_dir="$FINETUNED_MODEL_DIR"
+        elif [ "$MODEL_NAME" = "meds_tab/tiny" ]; then
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$PRETRAINED_MODEL_DIR"
+        else
+            echo "Unknown MODEL_NAME: $MODEL_NAME"
+            exit 1
         fi
         echo "Completed dataset: $DATASET_NAME, task: $task"
     done
