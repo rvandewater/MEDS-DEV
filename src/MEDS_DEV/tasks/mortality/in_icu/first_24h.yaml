@@ -18,7 +18,8 @@ metadata:
     - NWICU
     - INSPIRE
     - eICU
-    -
+    - EHRShot
+    - SICdb
 
 predicates:
   icu_admission: ???
