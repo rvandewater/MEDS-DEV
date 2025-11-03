@@ -58,9 +58,53 @@ def process_labels():
     return all_dataset_tasks
 
 
+def get_subject_counts():
+    """Calculates the number of unique subjects for each split (train, held_out, tuning) across all datasets
+    and outputs a Polars DataFrame.
+
+    Returns:
+        pl.DataFrame: A DataFrame with columns for dataset, train, held_out, and tuning.
+    """
+    datasets = ["AUMCdb", "eICU", "EHRShot", "HIRID", "INSPIRE", "MIMIC-IV", "NWICU", "SICdb"]
+    split_counts = []
+
+    for dataset in datasets:
+        dataset_root = f"/sc/home/robin.vandewater/datasets/meds/{dataset}/data/"
+        counts = {}
+
+        # Count unique subjects in each split
+        for split in ["train", "held_out", "tuning"]:
+            split_path = f"{dataset_root}{split}/*.parquet"
+            try:
+                unique_subjects = (
+                    pl.scan_parquet(split_path).select(pl.col("subject_id").unique()).collect().height
+                )
+                counts[split] = unique_subjects
+            except Exception as e:
+                # Handle missing or empty splits
+                print(f"Error processing {dataset} {split}: {e}")
+                counts[split] = 0
+
+        # Append dataset and counts to the results
+        split_counts.append(
+            {
+                "dataset": dataset,
+                "train": counts.get("train", 0),
+                "held_out": counts.get("held_out", 0),
+                "tuning": counts.get("tuning", 0),
+            }
+        )
+
+    # Convert results to a Polars DataFrame
+    return pl.DataFrame(split_counts)
+
+
+# Example usage
+subject_counts_df = get_subject_counts()
 # Execute the function
 all_dataset_tasks = process_labels()
 all_dataset_tasks.write_parquet("all_dataset_tasks.parquet")
+subject_counts_df.write_parquet("subject_counts_df.parquet")
 
 for item in all_dataset_tasks:
     print(item)
@@ -70,4 +114,5 @@ with pl.Config(tbl_rows=1000, tbl_cols=10, fmt_str_lengths=1000, tbl_width_chars
     #         all_dataset_tasks = all_dataset_tasks.with_columns(
     #             pl.col(col).cast(pl.Datetime)
     #         )
+    print(subject_counts_df)
     print(all_dataset_tasks)
