@@ -35,7 +35,7 @@ predicates:
     value_max: 22 # mEq/L = mmol/L for bicarbonate
     value_max_inclusive: False
 
-  # Anemia task predicates. Conversion from g/dL to mmol/L: 1 g/dL = 0.6206 mmol/L, so 13 g/dL = 8.066 mmol/L
+  # Anemia task predicates. Conversion from g/dL to g/L: multiply by 10
   hemoglobin_1:
     code: OBSERVATION//Hemoglobin [Mass/volume] in Blood//g/l
   hemoglobin_2:
@@ -43,12 +43,12 @@ predicates:
   abnormally_low_hemoglobin_1:
     code: OBSERVATION//Hemoglobin [Mass/volume] in Blood//g/l
     value_min: null
-    value_max: 8 # mmol/L
+    value_max: 130 # g/L
     value_max_inclusive: False
   abnormally_low_hemoglobin_2:
     code: OBSERVATION//Hemoglobin [Mass/volume] in Blood//g/l
     value_min: null
-    value_max: 8 # mmol/L
+    value_max: 130 # g/L
     value_max_inclusive: False
   hemoglobin:
     expr: or(hemoglobin_1, hemoglobin_2)
