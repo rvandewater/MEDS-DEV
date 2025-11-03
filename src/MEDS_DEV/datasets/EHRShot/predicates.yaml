@@ -297,6 +297,15 @@ predicates:
   abnormally_high_bp:
     expr: or(abnormally_high_systolic_bp, abnormally_high_diastolic_bp)
 
+  # Hypotension task predicates
+  map:
+    code: LOINC//8478-0
+  abnormally_low_map:
+    code: LOINC//8478-0
+    value_min: null
+    value_max: 65 # mmHg
+    value_max_inclusive: False
+
   # Elevated Creatinine task
   creatinine:
     code: LOINC//2160-0
