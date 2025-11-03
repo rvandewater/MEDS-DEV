@@ -9,8 +9,16 @@ metadata:
   contacts:
     - name: "Jungwoo Oh"
       github_username: "jwoo5"
+    - name: "Robin P. van de Water"
+      github_username: "rvandewater"
+
   supported_datasets:
     - MIMIC-IV
+    - HIRID
+    - AUMCdb
+    - SICdb
+    - INSPIRE
+    - NWICU
 
 predicates:
   hospital_admission: ???
@@ -30,6 +38,13 @@ predicates:
     value_min: null
     value_max: 150 # K/uL
     value_max_inclusive: False
+  # abnormally_low_platelets_unit:
+  #   code: ???
+  #   value_min: null
+  #   value_max: 150 # K/uL
+  #   value_max_inclusive: False
+  # abnormally_low_platelets:
+  #   expr: or(abnormally_low_platelets_kul, abnormally_low_platelets_unit)
 
 trigger: hospital_admission
 

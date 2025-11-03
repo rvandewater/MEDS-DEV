@@ -13,34 +13,33 @@ predicates:
     code: { regex: "^ADMISSION*" }
   icu_discharge:
     code: { regex: "^DISCHARGE*" }
-  creatinine_mgdl:
-    code: { any: ["LAB//LOINC//12189-7"] }
+
   # Elevated Creatinine task predicates
-  creatinine_1:
-    code: LAB//LOINC//2160-0
-  creatinine_2:
-    code: LAB//LOINC//12189-7
-  urine_creatinine:
-    code: LAB//LOINC//35674-1
-  abnormally_high_creatinine_1:
-    code: LAB//LOINC//2160-0
+  creatinine:
+    code: LAB//LOINC//2160-0//mg/dl
+  # creatinine_2:
+  #   code: LAB//LOINC//12189-7
+  # urine_creatinine:
+  #   code: LAB//LOINC//35674-1
+  abnormally_high_creatinine_mg_dL:
+    code: LAB//LOINC//2160-0//mg/dl
     value_min: 1.2 # mg/dL
     value_min_inclusive: False
     value_max: null
-  abnormally_high_creatinine_2:
-    code: LAB//LOINC//14682-9
-    value_min: 1.2 # mg/dL
-    value_min_inclusive: False
-    value_max: null
+  # abnormally_high_creatinine_2:
+  #   code: LAB//LOINC//14682-9
+  #   value_min: 1.2 # mg/dL
+  #   value_min_inclusive: False
+  #   value_max: null
   # abnormally_high_urine_creatinine:
   #   code: LAB//LOINC//35674-1
   #   value_min: 370 # mg/dL
   #   value_min_inclusive: False
   #   value_max: null
-  creatinine:
-    expr: or(creatinine_1, creatinine_2)
-  abnormally_high_creatinine_mg_dL:
-    expr: or(abnormally_high_creatinine_1, abnormally_high_creatinine_2)
+  # creatinine:
+  #   expr: or(creatinine_1, creatinine_2)
+  # abnormally_high_creatinine_mg_dL:
+  #   expr: or(abnormally_high_creatinine_1, abnormally_high_creatinine_2)
 
   # Hyponatremia task predicates
   sodium_1:

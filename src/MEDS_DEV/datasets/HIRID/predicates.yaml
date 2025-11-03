@@ -12,7 +12,7 @@ predicates:
   # Elevated Creatinine task predicates
   creatinine:
     code: OBSERVATION//Creatinine [Moles/volume] in Blood//umol/l
-  abnormally_high_creatinine_umol_l:
+  abnormally_high_creatinine_umol_L:
     code: OBSERVATION//Creatinine [Moles/volume] in Blood//umol/l
     value_min: 115 # 1.3 mg/dL
     value_min_inclusive: False

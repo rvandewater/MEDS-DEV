@@ -16,6 +16,9 @@ metadata:
     - AUMCdb
     - MIMIC-IV
     - NWICU
+    - INSPIRE
+    - eICU
+    -
 
 predicates:
   icu_admission: ???

@@ -25,7 +25,7 @@ predicates:
     value_max: null
   creatinine:
     expr: or(creatinine_1, creatinine_2)
-  abnormally_high_creatinine_umol_l:
+  abnormally_high_creatinine_umol_L:
     expr: or(abnormally_high_creatinine_1_umol_l, abnormally_high_creatinine_2_umol_l)
 
   # Hyponatremia task predicates

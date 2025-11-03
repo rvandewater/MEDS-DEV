@@ -11,6 +11,10 @@ metadata:
       github_username: "jwoo5"
   supported_datasets:
     - MIMIC-IV
+    - SICdb
+    - AUMCdb
+    - INSPIRE
+    - HIRID
 
 predicates:
   hospital_admission: ???
