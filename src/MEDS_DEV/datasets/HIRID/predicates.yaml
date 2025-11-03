@@ -37,7 +37,7 @@ predicates:
 
   # Anemia task predicates. Conversion from g/dL to g/L: multiply by 10
   hemoglobin_1:
-    code: OBSERVATION//Hemoglobin [Mass/volume] in Blood//g/l
+    code: OBSERVATION//Hemoglobin [Mass/volume] in Arterial blood//g/L
   hemoglobin_2:
     code: OBSERVATION//Hemoglobin [Mass/volume] in Blood//g/l
   abnormally_low_hemoglobin_1:
