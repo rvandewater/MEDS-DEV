@@ -13,7 +13,9 @@ default_dataset_paths = {
     "SICdb": "/sc/home/robin.vandewater/datasets/meds/SICdb/labels/",
 }
 
-
+# 
+# aggregated_tasks = aggregate_labels("/sc/arion/projects/hpims-hpi/projects/foundation_models_ehr/cohorts/meds_debug/full_omop_25_04_29/MEDS_cohort/tasks/")
+# 
 def aggregate_labels(directory):
     """Walks the given directory looking for label files as parquet, then aggregates them into a single Polars
     DataFrame with added 'task' and 'split' columns.
@@ -38,12 +40,21 @@ def aggregate_labels(directory):
                 # print(f"Loaded {path} with shape {df.shape}, task={task}, split={split}")
                 dfs.append(df)
     if dfs:
-        # Concatenate all DataFrames vertically (assuming same schema)
-        return pl.concat(dfs)
+        ref_schema = dfs[0].schema
+        coerced_dfs = []
+        for df in dfs:
+            # Cast columns to reference schema where possible
+            for col, dtype in ref_schema.items():
+                if col in df.columns and df.schema[col] != dtype:
+                    df = df.with_columns(pl.col(col).cast(dtype))
+            coerced_dfs.append(df)
+        return pl.concat(coerced_dfs)
     else:
         return pl.DataFrame()
 
-
+dataset_paths = {
+    "MSHS": "/sc/arion/projects/hpims-hpi/projects/foundation_models_ehr/cohorts/meds_debug/full_omop_25_04_29/MEDS_cohort/tasks/",
+}
 def process_labels(dataset_paths=None):
     """Processes the aggregated labels DataFrame to convert multi-class labels into boolean labels for each
     unique value.
@@ -54,7 +65,7 @@ def process_labels(dataset_paths=None):
     all_dataset_tasks = []
     if dataset_paths is None:
         dataset_paths = default_dataset_paths
-    for dataset, dataset_path in dataset_paths:
+    for dataset, dataset_path in dataset_paths.items():
         tasks = aggregate_labels(dataset_path)
         # Add dataset column
         tasks = tasks.with_columns(pl.lit(dataset).alias("dataset"))
@@ -83,7 +94,7 @@ def get_subject_counts(dataset_paths=None):
     if dataset_paths is None:
         dataset_paths = default_dataset_paths
 
-    for dataset, dataset_root in dataset_paths:
+    for dataset, dataset_root in dataset_paths.items():
         counts = {}
 
         # Count unique subjects in each split
