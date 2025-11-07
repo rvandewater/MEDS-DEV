@@ -2,6 +2,17 @@ import os
 
 import polars as pl
 
+default_dataset_paths = {
+    "AUMCdb": "/sc/home/robin.vandewater/datasets/meds/AUMCdb/labels/",
+    "eICU": "/sc/home/robin.vandewater/datasets/meds/eICU/labels/",
+    "EHRShot": "/sc/home/robin.vandewater/datasets/meds/EHRShot/labels/",
+    "HIRID": "/sc/home/robin.vandewater/datasets/meds/HIRID/labels/",
+    "INSPIRE": "/sc/home/robin.vandewater/datasets/meds/INSPIRE/labels/",
+    "MIMIC-IV": "/sc/home/robin.vandewater/datasets/meds/MIMIC-IV/labels/",
+    "NWICU": "/sc/home/robin.vandewater/datasets/meds/NWICU/labels/",
+    "SICdb": "/sc/home/robin.vandewater/datasets/meds/SICdb/labels/",
+}
+
 
 def aggregate_labels(directory):
     """Walks the given directory looking for label files as parquet, then aggregates them into a single Polars
@@ -33,7 +44,7 @@ def aggregate_labels(directory):
         return pl.DataFrame()
 
 
-def process_labels():
+def process_labels(dataset_paths=None):
     """Processes the aggregated labels DataFrame to convert multi-class labels into boolean labels for each
     unique value.
 
@@ -41,8 +52,10 @@ def process_labels():
         pl.DataFrame: The processed DataFrame with boolean labels.
     """
     all_dataset_tasks = []
-    for dataset in ["AUMCdb", "eICU", "EHRShot", "HIRID", "INSPIRE", "MIMIC-IV", "NWICU", "SICdb"]:
-        tasks = aggregate_labels(f"/sc/home/robin.vandewater/datasets/meds/{dataset}/labels")
+    if dataset_paths is None:
+        dataset_paths = default_dataset_paths
+    for dataset, dataset_path in dataset_paths:
+        tasks = aggregate_labels(dataset_path)
         # Add dataset column
         tasks = tasks.with_columns(pl.lit(dataset).alias("dataset"))
         if len(tasks) == 0 or "task" not in tasks.columns:
@@ -58,18 +71,19 @@ def process_labels():
     return all_dataset_tasks
 
 
-def get_subject_counts():
+def get_subject_counts(dataset_paths=None):
     """Calculates the number of unique subjects for each split (train, held_out, tuning) across all datasets
     and outputs a Polars DataFrame.
 
     Returns:
         pl.DataFrame: A DataFrame with columns for dataset, train, held_out, and tuning.
     """
-    datasets = ["AUMCdb", "eICU", "EHRShot", "HIRID", "INSPIRE", "MIMIC-IV", "NWICU", "SICdb"]
+    # datasets = ["AUMCdb", "eICU", "EHRShot", "HIRID", "INSPIRE", "MIMIC-IV", "NWICU", "SICdb"]
     split_counts = []
+    if dataset_paths is None:
+        dataset_paths = default_dataset_paths
 
-    for dataset in datasets:
-        dataset_root = f"/sc/home/robin.vandewater/datasets/meds/{dataset}/data/"
+    for dataset, dataset_root in dataset_paths:
         counts = {}
 
         # Count unique subjects in each split
@@ -99,20 +113,28 @@ def get_subject_counts():
     return pl.DataFrame(split_counts)
 
 
-# Example usage
-subject_counts_df = get_subject_counts()
-# Execute the function
-all_dataset_tasks = process_labels()
-all_dataset_tasks.write_parquet("all_dataset_tasks.parquet")
-subject_counts_df.write_parquet("subject_counts_df.parquet")
+# # Execute the function
+# all_dataset_tasks = process_labels()
+# all_dataset_tasks.write_parquet("all_dataset_tasks.parquet")
 
-for item in all_dataset_tasks:
-    print(item)
-with pl.Config(tbl_rows=1000, tbl_cols=10, fmt_str_lengths=1000, tbl_width_chars=1000):
-    # for col in all_dataset_tasks.get_column_names():
-    #     if col not in ["task", "split", "boolean_value", "dataset"]:
-    #         all_dataset_tasks = all_dataset_tasks.with_columns(
-    #             pl.col(col).cast(pl.Datetime)
-    #         )
-    print(subject_counts_df)
-    print(all_dataset_tasks)
+
+def collect_tasks_dhc():
+    dataset_paths = {}
+    for dataset in ["AUMCdb", "eICU", "EHRShot", "HIRID", "INSPIRE", "MIMIC-IV", "NWICU", "SICdb"]:
+        dataset_paths[dataset] = f"/sc/home/robin.vandewater/datasets/meds/{dataset}/labels"
+    all_dataset_tasks = process_labels(dataset_paths=dataset_paths)
+    if not os.path.exists("subject_counts_df.parquet"):
+        subject_counts_df = get_subject_counts(dataset_paths=dataset_paths)
+        subject_counts_df.write_parquet("subject_counts_df.parquet")
+    else:
+        pl.read_parquet("subject_counts_df.parquet")
+    for item in all_dataset_tasks:
+        print(item)
+    with pl.Config(tbl_rows=1000, tbl_cols=10, fmt_str_lengths=1000, tbl_width_chars=1000):
+        # for col in all_dataset_tasks.get_column_names():
+        #     if col not in ["task", "split", "boolean_value", "dataset"]:
+        #         all_dataset_tasks = all_dataset_tasks.with_columns(
+        #             pl.col(col).cast(pl.Datetime)
+        #         )
+        print(subject_counts_df)
+        print(all_dataset_tasks)
