@@ -107,3 +107,31 @@ predicates:
     expr: or(map_1, map_2)
   abnormally_low_map:
     expr: or(abnormally_low_map_1, abnormally_low_map_2)
+
+  potassium:
+    code: LAB//potassium//mmol/L
+  abnormally_high_potassium:
+    code: LAB//potassium//mmol/L
+    value_min: 5.0 # mmol/L
+    value_min_inclusive: False
+    value_max: null
+
+  glucose_1:
+    code: LAB//glucose//mg/dL
+  glucose_2:
+    code: LAB//bedside glucose//mg/dL
+  abnormally_low_glucose_1:
+    code: "SNOMED/33747003"
+    value_min: null
+    value_max: 70.2 # mg/dL
+    value_max_inclusive: True
+  abnormally_low_glucose_2:
+    code: LAB//glucose//mg/dL
+    value_min: null
+    value_max: 70.2 # mg/dL
+    value_max_inclusive: True
+
+  glucose:
+    expr: or(glucose_1, glucose_2)
+  abnormally_low_glucose:
+    expr: or(abnormally_low_glucose_1, abnormally_low_glucose_2)

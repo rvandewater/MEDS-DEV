@@ -165,3 +165,19 @@ predicates:
     expr: or(map_1, map_2)
   abnormally_low_map:
     expr: or(abnormally_low_map_1, abnormally_low_map_2)
+
+  potassium:
+    code: MEASURE//Kalium (bloed)//mmol/l
+  abnormally_high_potassium:
+    code: MEASURE//Kalium (bloed)//mmol/l
+    value_min: 5.0 # mmol/L
+    value_min_inclusive: True
+    value_max: null
+
+  glucose:
+    code: MEASURE//Glucose (bloed)//mmol/l
+  abnormally_low_glucose:
+    code: MEASURE//Glucose (bloed)//mmol/l
+    value_min: null
+    value_max: 70.2 # mg/dL
+    value_max_inclusive: True

@@ -1,0 +1,69 @@
+metadata:
+  description: >-
+    Identify patients who develop hypoglycemia (low blood sugar levels) within 24 hours of hospital admission, excluding those with prior hypoglycemia or children under 18.
+  contacts:
+    - name: "Robin van de Water"
+      github_username: "rvandewater"
+  supported_datasets:
+    - MIMIC-IV
+
+predicates:
+  hospital_admission: ???
+  hospital_discharge: ???
+  birth:
+    code: { regex: "MEDS_BIRTH.*" }
+  death:
+    code: { regex: "MEDS_DEATH.*" }
+  discharge_or_death:
+    expr: or(death, hospital_discharge)
+  glucose:
+    code: ???
+  abnormally_low_glucose:
+    code: ???
+    value_min: null
+    value_max: 70.2 # mg/dL
+    value_max_inclusive: True
+  # This is if the dataset contains diagnosis codes (ICD for example) for hypoglycemia
+  diagnosed_hypoglycemia:
+    code: ???
+  hypoglycemia_combined:
+    expr: or(diagnosed_hypoglycemia, abnormally_low_glucose)
+
+trigger: hospital_admission
+
+windows:
+  input:
+    start: null
+    end: trigger + 24h
+    start_inclusive: True
+    end_inclusive: True
+    index_timestamp: end
+    # do not allow to have shown elevated values previously
+    has:
+      hypoglycemia_combined: (None, 0)
+  # do not allow hospital discharge to happen within the input + target window
+  no_discharge:
+    start: trigger
+    end: start + 24h
+    start_inclusive: False
+    end_inclusive: True
+    has:
+      hospital_admission: (None, 0)
+      discharge_or_death: (None, 0)
+  # do not allow to include children (age <= 18) patients
+  no_children:
+    start: end - 6570d # 18 years = 365 * 18 days
+    end: trigger
+    start_inclusive: True
+    end_inclusive: True
+    has:
+      birth: (None, 0)
+  target:
+    start: input.end
+    end: start + 24h
+    start_inclusive: False
+    end_inclusive: True
+    has:
+      glucose: (1, None)
+      # creatinine_mgdl: (1, None)
+    label: hypoglycemia_combined

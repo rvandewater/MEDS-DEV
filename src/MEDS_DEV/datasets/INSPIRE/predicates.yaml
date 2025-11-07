@@ -94,9 +94,24 @@ predicates:
     value_min: null
     value_max: 65 # mmHg
     value_max_inclusive: False
-
+  #
   map:
     expr: or(map_1, map_2, map_3, map_4)
   abnormally_low_map:
     expr: or(abnormally_low_map_1, abnormally_low_map_2, abnormally_low_map_3, abnormally_low_map_4)
-# predicates:
+  # Hyperkalemia task predicates
+  potassium:
+    code: "LAB//potassium//mmol/L"
+  abnormally_high_potassium:
+    code: "LAB//potassium//mmol/L"
+    value_min: 5.0 # mmol/L
+    value_min_inclusive: False
+    value_max: null
+
+  glucose:
+    code: LAB//glucose//mg/dL
+  abnormally_low_glucose:
+    code: LAB//glucose//mg/dL
+    value_min: null
+    value_max: 70.2 # mg/dL
+    value_max_inclusive: True

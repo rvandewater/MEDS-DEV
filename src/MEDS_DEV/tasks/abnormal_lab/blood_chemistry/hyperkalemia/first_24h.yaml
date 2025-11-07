@@ -1,0 +1,71 @@
+metadata:
+  description: >-
+    Identify patients who develop hyperkalemia (high potassium levels) within 24 hours of hospital admission, excluding those with prior hyperkalemia or children under 18.
+  contacts:
+    - name: "Robin van de Water"
+      github_username: "rvandewater"
+  supported_datasets:
+    - MIMIC-IV
+
+predicates:
+  hospital_admission: ???
+  hospital_discharge: ???
+  birth:
+    code: { regex: "MEDS_BIRTH.*" }
+  death:
+    code: { regex: "MEDS_DEATH.*" }
+  discharge_or_death:
+    expr: or(death, hospital_discharge)
+
+  potassium:
+    code: ???
+  abnormally_high_potassium:
+    code: ???
+    value_min: 5.0 # mmol/L
+    value_min_inclusive: False
+    value_max: null
+  # This is if the dataset contains diagnosis codes (ICD for example) for hyperkalemia
+  diagnosed_hyperkalemia:
+    code: ???
+  hyperkalemia_combined:
+    expr: or(diagnosed_hyperkalemia, abnormally_high_potassium)
+
+trigger: hospital_admission
+
+windows:
+  input:
+    start: null
+    end: trigger + 24h
+    start_inclusive: True
+    end_inclusive: True
+    index_timestamp: end
+    # do not allow to have shown elevated values previously
+    has:
+      hyperkalemia_combined: (None, 0)
+  # do not allow hospital discharge to happen within the input + target window
+  no_discharge:
+    start: trigger
+    end: start + 24h
+    start_inclusive: False
+    end_inclusive: True
+    has:
+      # hospital_admission: (None, 0)
+      discharge_or_death: (None, 0)
+  # do not allow to include children (age <= 18) patients
+  no_children:
+    start: end - 6570d # 18 years = 365 * 18 days
+    end: trigger
+    start_inclusive: True
+    end_inclusive: True
+    has:
+      birth: (None, 0)
+  target:
+    start: input.end
+    end: start + 24h
+    start_inclusive: False
+    end_inclusive: True
+    # has:
+    # creatinine: (1, None)
+    # creatinine_mgdl: (1, None)
+    # label: abnormally_high_creatinine
+    label: hyperkalemia_combined

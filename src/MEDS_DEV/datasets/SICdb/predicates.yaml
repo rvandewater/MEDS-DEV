@@ -187,13 +187,14 @@ predicates:
   potassium:
     expr: or(potassium_1, potassium_2)
 
+  # Hyperkalemia task predicates
   abnormally_high_potassium_1:
-    code: LOINC//2823-3
+    code: LOINC//2823-3//mmol/L
     value_min: 5.0 # mEq/L
     value_min_inclusive: True
     value_max: null
   abnormally_high_potassium_2:
-    code: LOINC//6298-4 #Potassium [Moles/volumeplate] in Blood
+    code: LOINC//6298-4//mmol/L #Potassium [Moles/volumeplate] in Blood
     value_min: 5.0 # mEq/L
     value_min_inclusive: True
     value_max: null
@@ -208,24 +209,24 @@ predicates:
 
   # Hypoglycemia predicates
   glucose_1:
-    code: LAB//LOINC//2345-7 # Glucose [Mass/volume] in serum or Plasma
+    code: LAB//LOINC//2345-7//mg/dl # Glucose [Mass/volume] in serum or Plasma
   glucose_2:
-    code: LOINC//2339-0 # Glucose [Mass/volume] in Blood
+    code: LOINC//2339-0//mg/dl # Glucose [Mass/volume] in Blood
   glucose_3:
-    code: LOINC//5792-7 # Glucose [Mass/volume] in Urine by Test strip
+    code: LOINC//5792-7//mg/dl # Glucose [Mass/volume] in Urine by Test strip
 
   abnormally_low_glucose_1:
-    code: LOINC//2345-7 # Glucose [Mass/volume] in Blood
+    code: LOINC//2345-7//mg/dl # Glucose [Mass/volume] in Blood
     value_min: null
     value_max: 70.2 # mg/dL
     value_max_inclusive: False
   abnormally_low_glucose_2:
-    code: LOINC//2339-0 # Glucose [Mass/volume]
+    code: LOINC//2339-0//mg/dl # Glucose [Mass/volume] in Blood
     value_min: null
     value_max: 70.2 # mg/dL
     value_max_inclusive: False
   abnormally_low_glucose_3:
-    code: LOINC//5792-7 # Glucose [Mass/volume] in Urine by Test strip
+    code: LOINC//5792-7//mg/dl # Glucose [Mass/volume] in Urine by Test strip
     value_min: null
     value_max: 70.2 # mg/dL
     value_max_inclusive: False
@@ -236,28 +237,3 @@ predicates:
   abnormally_low_glucose:
     expr: or(abnormally_low_glucose_1, abnormally_low_glucose_2, abnormally_low_glucose_3)
 # TODO: Add hypotension based on MAP. This data comes from the data float h (waveform data)
-# map_1:
-#   code: MEASURE//ABP gemiddeld//mmHg
-# map_2:
-#   code: MEASURE//Niet invasieve bloeddruk gemiddeld//mmHg
-# # map_3:
-# #   code: LAB//225312//mmHg
-# abnormally_low_map_1:
-#   code: MEASURE//ABP gemiddeld//mmHg
-#   value_min: null
-#   value_max: 65 # mmHg
-#   value_max_inclusive: False
-# abnormally_low_map_2:
-#   code: MEASURE//Niet invasieve bloeddruk gemiddeld//mmHg
-#   value_min: null
-#   value_max: 65 # mmHg
-#   value_max_inclusive: False
-# # abnormally_low_map_3:
-# #   code: LAB//225312//mmHg
-# #   value_min: null
-# #   value_max: 65 # mmHg
-# #   value_max_inclusive: False
-# map:
-#   expr: or(map_1, map_2)
-# abnormally_low_map:
-#   expr: or(abnormally_low_map_1, abnormally_low_map_2)
