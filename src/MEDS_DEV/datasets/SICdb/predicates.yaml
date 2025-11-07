@@ -230,7 +230,6 @@ predicates:
     value_min: null
     value_max: 70.2 # mg/dL
     value_max_inclusive: False
-
   glucose:
     expr: or(glucose_1, glucose_2, glucose_3)
 

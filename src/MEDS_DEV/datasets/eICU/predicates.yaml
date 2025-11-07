@@ -107,7 +107,7 @@ predicates:
     expr: or(map_1, map_2)
   abnormally_low_map:
     expr: or(abnormally_low_map_1, abnormally_low_map_2)
-
+  # Hyperkalemia task predicates
   potassium:
     code: LAB//potassium//mmol/L
   abnormally_high_potassium:
@@ -115,7 +115,7 @@ predicates:
     value_min: 5.0 # mmol/L
     value_min_inclusive: False
     value_max: null
-
+  # Hypoglycemia task predicates
   glucose_1:
     code: LAB//glucose//mg/dL
   glucose_2:

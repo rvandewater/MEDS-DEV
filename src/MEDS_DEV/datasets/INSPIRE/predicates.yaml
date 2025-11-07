@@ -107,7 +107,7 @@ predicates:
     value_min: 5.0 # mmol/L
     value_min_inclusive: False
     value_max: null
-
+  # Hypoglycemia task predicates
   glucose:
     code: LAB//glucose//mg/dL
   abnormally_low_glucose:

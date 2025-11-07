@@ -103,7 +103,7 @@ predicates:
     expr: or(map_1, map_2)
   abnormally_low_map:
     expr: or(abnormally_low_map_1, abnormally_low_map_2)
-
+  # Hyperkalemia task predicates
   potassium:
     code: OBSERVATION//Potassium [Moles/volume] in Blood//mmol/l
   abnormally_high_potassium:
@@ -111,11 +111,12 @@ predicates:
     value_min: 5.0 # mmol/L
     value_min_inclusive: False
     value_max: null
+  # Hypoglycemia task predicates
   glucose:
     code: OBSERVATION//Glucose [Moles/volume] in Serum or Plasma//mmol/l
   abnormally_low_glucose:
     code: OBSERVATION//Glucose [Moles/volume] in Serum or Plasma//mmol/l
-    value_min:
+    value_min: 70.2 # mg/dL
     value_min_inclusive: False
     value_max: null
 # Summary of OBSERVATION codes in HIRID dataset tuning:
