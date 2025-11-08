@@ -5,10 +5,10 @@ predicates:
     code: { regex: "STANFORD_VISIT//.+//start" }
 
   outpatient_visit:
-    code: { regex: r"STANFORD_VISIT//.+//start" }
+    code: { regex: "STANFORD_VISIT//.+//start" }
 
   hospital_discharge:
-    code: { regex: r"STANFORD_VISIT//.+//end" }
+    code: { regex: "STANFORD_VISIT//.+//end" }
 
   death:
     code: { regex: "MEDS_DEATH.*" }
