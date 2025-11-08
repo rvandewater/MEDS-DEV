@@ -1,3 +1,4 @@
+import argparse
 import os
 
 import polars as pl
@@ -13,9 +14,12 @@ default_dataset_paths = {
     "SICdb": "/sc/home/robin.vandewater/datasets/meds/SICdb/labels/",
 }
 
-# 
-# aggregated_tasks = aggregate_labels("/sc/arion/projects/hpims-hpi/projects/foundation_models_ehr/cohorts/meds_debug/full_omop_25_04_29/MEDS_cohort/tasks/")
-# 
+
+#
+# aggregated_tasks = aggregate_labels
+# ("/sc/arion/projects/hpims-hpi/projects/foundation_models_ehr/
+# cohorts/meds_debug/full_omop_25_04_29/MEDS_cohort/tasks/")
+#
 def aggregate_labels(directory):
     """Walks the given directory looking for label files as parquet, then aggregates them into a single Polars
     DataFrame with added 'task' and 'split' columns.
@@ -52,9 +56,13 @@ def aggregate_labels(directory):
     else:
         return pl.DataFrame()
 
+
 dataset_paths = {
-    "MSHS": "/sc/arion/projects/hpims-hpi/projects/foundation_models_ehr/cohorts/meds_debug/full_omop_25_04_29/MEDS_cohort/tasks/",
+    "MSHS": "/sc/arion/projects/hpims-hpi/projects/foundation_models_ehr/"
+    "cohorts/meds_debug/full_omop_25_04_29/MEDS_cohort/tasks/",
 }
+
+
 def process_labels(dataset_paths=None):
     """Processes the aggregated labels DataFrame to convert multi-class labels into boolean labels for each
     unique value.
@@ -149,3 +157,25 @@ def collect_tasks_dhc():
         #         )
         print(subject_counts_df)
         print(all_dataset_tasks)
+
+
+def check_labels_in_path(root_path):
+    """Checks all datasets in the given root path for label files and prints summary."""
+    dataset_paths = {}
+    # Find all dataset directories in the root path
+    for entry in os.scandir(root_path):
+        if entry.is_dir():
+            dataset_paths[entry.name] = os.path.join(entry.path, "labels")
+    print(f"Checking datasets: {list(dataset_paths.keys())}")
+    all_dataset_tasks = process_labels(dataset_paths=dataset_paths)
+    subject_counts_df = get_subject_counts(dataset_paths=dataset_paths)
+    with pl.Config(tbl_rows=1000, tbl_cols=10, fmt_str_lengths=1000, tbl_width_chars=1000):
+        print(subject_counts_df)
+        print(all_dataset_tasks)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Check all datasets in a given path for label files.")
+    parser.add_argument("root_path", type=str, help="Root path containing dataset directories.")
+    args = parser.parse_args()
+    check_labels_in_path(args.root_path)
