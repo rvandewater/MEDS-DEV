@@ -52,7 +52,7 @@ predicates:
     code: "SNOMED//33747003//start"
 
   glucose_2:
-    code: "LOINC//LP416145-3"
+    code: "LOINC//2345-7"
 
   glucose_3:
     code: "LOINC//14749-6"
@@ -81,7 +81,11 @@ predicates:
 
   abnormally_low_glucose:
     expr: or(abnormally_low_glucose_1, abnormally_low_glucose_2, abnormally_low_glucose_3)
-
+  diagnosed_hypoglycemia:
+    code:
+      {
+        regex: SNOMED//(267384006|421725003|719216001|302866003|237633009|120731000119103|190448007|230796005|421437000|52767006|237637005|84371000119108)//start,
+      }
   # Sodium measurements for hyponatremia
   sodium_1:
     code: "LOINC//LG11363-5"
@@ -172,7 +176,8 @@ predicates:
 
   abnormally_high_potassium:
     expr: or(abnormally_high_potassium_1, abnormally_high_potassium_2, abnormally_high_potassium_3, abnormally_high_potassium_4, abnormally_high_potassium_5)
-
+  diagnosed_hyperkalemia:
+    code: "SNOMED//14140009//start" # Hyperkalemia (disorder)
   # Platelet measurements for thrombocytopenia
   platelets_1:
     code: "LOINC//LP393218-5"
