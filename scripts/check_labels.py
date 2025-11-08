@@ -107,7 +107,7 @@ def get_subject_counts(dataset_paths=None):
 
         # Count unique subjects in each split
         for split in ["train", "held_out", "tuning"]:
-            split_path = f"{dataset_root}{split}/*.parquet"
+            split_path = f"{dataset_root}/data/{split}/*.parquet"
             try:
                 unique_subjects = (
                     pl.scan_parquet(split_path).select(pl.col("subject_id").unique()).collect().height
@@ -168,10 +168,15 @@ def check_labels_in_path(root_path):
             dataset_paths[entry.name] = os.path.join(entry.path, "labels")
     print(f"Checking datasets: {list(dataset_paths.keys())}")
     all_dataset_tasks = process_labels(dataset_paths=dataset_paths)
-    subject_counts_df = get_subject_counts(dataset_paths=dataset_paths)
+    if not os.path.exists(root_path + "/subject_counts_df.parquet"):
+        subject_counts_df = get_subject_counts(dataset_paths=dataset_paths)
+        subject_counts_df.write_parquet("subject_counts_df.parquet")
+    else:
+        subject_counts_df = pl.read_parquet("subject_counts_df.parquet")
     with pl.Config(tbl_rows=1000, tbl_cols=10, fmt_str_lengths=1000, tbl_width_chars=1000):
         print(subject_counts_df)
         print(all_dataset_tasks)
+    all_dataset_tasks.write_parquet(root_path + "/all_dataset_tasks.parquet")
 
 
 if __name__ == "__main__":
