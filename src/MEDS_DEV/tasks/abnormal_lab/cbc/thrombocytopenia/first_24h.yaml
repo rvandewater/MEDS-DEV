@@ -38,11 +38,12 @@ predicates:
     value_min: null
     value_max: 150 # K/uL
     value_max_inclusive: False
-  # abnormally_low_platelets_unit:
-  #   code: ???
-  #   value_min: null
-  #   value_max: 150 # K/uL
-  #   value_max_inclusive: False
+
+  diagnosed_thrombocytopenia:
+    code: ???
+  thrombocytopenia_combined:
+    expr: or(diagnosed_thrombocytopenia, abnormally_low_platelets)
+
   # abnormally_low_platelets:
   #   expr: or(abnormally_low_platelets_kul, abnormally_low_platelets_unit)
 
@@ -57,7 +58,7 @@ windows:
     index_timestamp: end
     # do not allow to have shown low platelets values previously
     has:
-      abnormally_low_platelets: (None, 0)
+      thrombocytopenia_combined: (None, 0)
   # do not allow hospital discharge to happen within the input + target window
   no_discharge:
     start: trigger
@@ -82,4 +83,4 @@ windows:
     end_inclusive: True
     has:
       platelets: (1, None)
-    label: abnormally_low_platelets
+    label: thrombocytopenia_combined

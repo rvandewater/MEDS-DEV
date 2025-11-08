@@ -34,7 +34,14 @@ predicates:
     value_min: null
     value_max: 65 # mmHg
     value_max_inclusive: False
-
+  abnormally_low_systolic_bp:
+    code: ???
+    value_max: 90
+  abnormally_low_diastolic_bp:
+    code: ???
+    value_max: 60
+  suspected_hypotension:
+    expr: or(abnormally_low_systolic_bp, abnormally_low_diastolic_bp, abnormally_low_map)
 trigger: hospital_admission
 
 windows:
@@ -46,7 +53,7 @@ windows:
     index_timestamp: end
     # do not allow to have shown low MAP values previously
     has:
-      abnormally_low_map: (None, 0)
+      suspected_hypotension: (None, 0)
   # do not allow hospital discharge to happen within the input + target window
   no_discharge:
     start: trigger
@@ -71,4 +78,4 @@ windows:
     end_inclusive: True
     has:
       map: (1, None)
-    label: abnormally_low_map
+    label: suspected_hypotension
