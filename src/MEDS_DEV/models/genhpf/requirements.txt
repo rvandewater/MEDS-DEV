@@ -1,2 +1,4 @@
-genhpf==1.0.10
+# genhpf==1.0.10
+git+https://github.com/rvandewater/GenHPF.git
 pyarrow==17.0.0
+typing_extensions
