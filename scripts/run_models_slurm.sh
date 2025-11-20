@@ -1,9 +1,9 @@
 #!/bin/bash
-#SBATCH --partition=gpu-b # -p
+#SBATCH --partition=gpu-batch # -p
 #SBATCH --cpus-per-task=16 # -c
 #SBATCH --mem=100gb
 #SBATCH --gpus=1
-#SBATCH --gpus=a100:1
+#SBATCH --gpus=a40:1
 #SBATCH --output=logs/%x_%j.log # %x is job-name, %j is job id
 #SBATCH --account=sci-lippert
 #SBATCH --time=120:00:00 # -t
