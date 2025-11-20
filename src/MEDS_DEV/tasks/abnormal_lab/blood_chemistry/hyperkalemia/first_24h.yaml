@@ -49,7 +49,7 @@ windows:
     start_inclusive: False
     end_inclusive: True
     has:
-      # hospital_admission: (None, 0)
+      hospital_admission: (None, 0)
       discharge_or_death: (None, 0)
   # do not allow to include children (age <= 18) patients
   no_children:
@@ -64,8 +64,6 @@ windows:
     end: start + 24h
     start_inclusive: False
     end_inclusive: True
-    # has:
-    # creatinine: (1, None)
-    # creatinine_mgdl: (1, None)
-    # label: abnormally_high_creatinine
+    has:
+      potassium: (1, None)
     label: hyperkalemia_combined
