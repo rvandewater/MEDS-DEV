@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --partition=gpu-longrun # -p
+#SBATCH --partition=gpu-batch # -p
 #SBATCH --cpus-per-task=8 # -c
 #SBATCH --mem=100gb
 #SBATCH --gpus=1
