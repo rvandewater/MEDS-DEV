@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --partition=gpu-shortrun # -p
-#SBATCH --cpus-per-task=16 # -c
+#SBATCH --partition=gpu-longrun # -p
+#SBATCH --cpus-per-task=8 # -c
 #SBATCH --mem=100gb
 #SBATCH --gpus=1
-#SBATCH --gpus=a40:1
+########## SBATCH --gpus=a40:1
 #SBATCH --output=logs/%x_%j.log # %x is job-name, %j is job id
 #SBATCH --account=sci-lippert
-#SBATCH --time=24:00:00 # -t
+#SBATCH --time=48:00:00 # -t
 
 # run with: sbatch run_models_slurm.sh cehrbert HIRID MIMIC-IV
 
