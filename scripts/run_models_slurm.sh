@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --partition=gpu # -p
+#SBATCH --partition=gpu-b # -p
 #SBATCH --cpus-per-task=16 # -c
 #SBATCH --mem=100gb
 #SBATCH --gpus=1
