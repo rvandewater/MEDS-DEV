@@ -8,6 +8,8 @@
 #SBATCH --account=sci-lippert
 #SBATCH --time=96:00:00 # -t
 #SBATCH -C 'GPU_SKU:A40|GPU_SKU:V100'
+#SBATCH --shell=/bin/bash
+
 # run with: sbatch run_models_slurm.sh cehrbert HIRID MIMIC-IV
 
 # Initialize conda:
@@ -16,7 +18,8 @@
 # Initialize conda - use the correct path to conda.sh
 
 # shellcheck disable=SC1091
-source /sc/home/robin.vandewater/conda3/etc/profile.d/conda.sh
+# source /sc/home/robin.vandewater/conda3/etc/profile.d/conda.sh
+eval "$(conda shell.bash hook)"
 
 cd ~/projects/MEDS_DEV_NEW || exit
 conda activate meds_dev_311
