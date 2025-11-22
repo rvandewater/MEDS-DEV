@@ -8,7 +8,6 @@
 #SBATCH --account=sci-lippert
 #SBATCH --time=96:00:00 # -t
 #SBATCH -C 'GPU_SKU:A40|GPU_SKU:V100'
-#SBATCH --shell=/bin/bash
 
 # run with: sbatch run_models_slurm.sh cehrbert HIRID MIMIC-IV
 
