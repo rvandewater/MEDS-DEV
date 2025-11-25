@@ -124,6 +124,10 @@ for dataset in "${datasets[@]}"; do
             export PREDICTIONS_DIR="$DATASET_DIR/predictions/$TASK_NAME/$MODEL_NAME"
             export FINETUNED_MODEL_DIR="$DATASET_DIR/models/$TASK_NAME/$MODEL_NAME"
             export EVALUATION_DIR="$DATASET_DIR/results/${TASK_NAME}/${MODEL_NAME}"
+            if [ -f "$PREDICTIONS_DIR/predictions.parquet" ]; then
+                echo "Skipping: $task because $PREDICTIONS_DIR/predictions.parquet already exists"
+                continue
+            fi
             echo "Cleaning up directories before training..."
             rm -rf "$OUTPUT_DIR"
             rm -rf "$FINETUNED_MODEL_DIR"
