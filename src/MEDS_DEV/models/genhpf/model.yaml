@@ -18,6 +18,23 @@ metadata:
 commands:
   unsupervised: null
   supervised:
+    prepare_data: |-
+      genhpf-preprocess-meds \
+        "{dataset_dir}/data" \
+        "--cohort={labels_dir}" \
+        "--metadata_dir={dataset_dir}/metadata" \
+        "--output_dir={output_dir}/data" \
+        "--workers=32" \
+        "--debug={demo}" \
+        "--skip-if-exists"
+    train_prepared: |-
+      genhpf-train \
+        "hydra.run.dir={output_dir}" \
+        "dataset.data={output_dir}/data" \
+        "checkpoint.save_dir={output_dir}/checkpoints" \
+        "common.debug={demo}" \
+        "--config-dir={model_dir}" \
+        "--config-name=genhpf_train"
     train: |-
       genhpf-preprocess-meds \
         "{dataset_dir}/data" \
