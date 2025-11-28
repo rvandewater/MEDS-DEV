@@ -63,19 +63,18 @@ source "$PWD/scripts/supported_tasks.sh"
 get_supported_tasks() {
     local dataset=$1
     case $dataset in
-        "AUMCdb") echo "${AUMCdb[@]}" ;;
-        "EHRShot") echo "${EHRShot[@]}" ;;
-        "HIRID") echo "${HIRID[@]}" ;;
-        "INSPIRE") echo "${INSPIRE[@]}" ;;
-        "MIMIC-IV") echo "${MIMIC_IV[@]}" ;;
-        "NWICU") echo "${NWICU[@]}" ;;
-        "SICdb") echo "${SICdb[@]}" ;;
-        "eICU") echo "${eICU[@]}" ;;
-        "MSHS") echo "${MSHS[@]}" ;;
+        "AUMCdb") printf "%s\n" "${AUMCdb[@]}" ;;
+        "EHRShot") printf "%s\n" "${EHRShot[@]}" ;;
+        "HIRID") printf "%s\n" "${HIRID[@]}" ;;
+        "INSPIRE") printf "%s\n" "${INSPIRE[@]}" ;;
+        "MIMIC-IV") printf "%s\n" "${MIMIC_IV[@]}" ;;
+        "NWICU") printf "%s\n" "${NWICU[@]}" ;;
+        "SICdb") printf "%s\n" "${SICdb[@]}" ;;
+        "eICU") printf "%s\n" "${eICU[@]}" ;;
+        "MSHS") printf "%s\n" "${MSHS[@]}" ;;
         *) echo "Unknown dataset: $dataset" ;;
     esac
 }
-
 
 # Common debug print
 debug_print_env() {
