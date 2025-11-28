@@ -124,7 +124,10 @@ for dataset in "${datasets[@]}"; do
         "--output_dir=$OUTPUT_DIR/data" \
         "--workers=32" \
         "--debug=False" \
-        "--skip-if-exists"
+        "--skip-if-exists"|| {
+            echo "Error: genhpf-preprocess-meds failed for task $TASK_NAME in dataset $DATASET_NAME. Skipping to the next task."
+            continue
+        }
     done
 done
 # for task in "${tasks[@]}"; do
