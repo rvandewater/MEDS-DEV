@@ -77,8 +77,7 @@ get_supported_tasks() {
 }
 
 tasks=$(get_supported_tasks "$dataset")
-# )
-tasks=$dataset
+
 echo "Using dataset $dataset with tasks: ${tasks[*]}"
 # Common debug print
 debug_print_env() {
