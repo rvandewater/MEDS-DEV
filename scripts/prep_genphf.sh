@@ -76,7 +76,7 @@ get_supported_tasks() {
     esac
 }
 
-tasks=$(get_supported_tasks "$dataset")
+readarray -t tasks < <(get_supported_tasks "$dataset")
 
 echo "Using dataset $dataset with tasks: ${tasks[*]}"
 # Common debug print
