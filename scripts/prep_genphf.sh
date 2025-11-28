@@ -117,7 +117,7 @@ for dataset in "${datasets[@]}"; do
         rm -rf "$PREDICTIONS_DIR"
         # Train the model (supervised)
         debug_print_env
-        genhpf-preprocess-meds \
+        python genhpf-preprocess-meds \
         "$DATASET_DIR/data" \
         "--cohort=$LABELS_DIR" \
         "--metadata_dir=$DATASET_DIR/metadata" \
