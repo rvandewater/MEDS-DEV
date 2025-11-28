@@ -18,7 +18,7 @@ metadata:
 commands:
   unsupervised: null
   supervised:
-    prepare_data: |-
+    prepare_train_data: |-
       genhpf-preprocess-meds \
         "{dataset_dir}/data" \
         "--cohort={labels_dir}" \
@@ -27,7 +27,7 @@ commands:
         "--workers=32" \
         "--debug={demo}" \
         "--skip-if-exists"
-    train_prepared: |-
+    train_with_prepared_data: |-
       genhpf-train \
         "hydra.run.dir={output_dir}" \
         "dataset.data={output_dir}/data" \
