@@ -76,9 +76,7 @@ get_supported_tasks() {
     esac
 }
 
-readarray -t tasks < <(get_supported_tasks "$dataset")
 
-echo "Using dataset $dataset with tasks: ${tasks[*]}"
 # Common debug print
 debug_print_env() {
     echo "===== DEBUG ENV ====="
@@ -97,6 +95,8 @@ debug_print_env() {
 for dataset in "${datasets[@]}"; do
     export DATASET_NAME=$dataset
     export DATASET_DIR="$base_dir/$dataset"
+    readarray -t tasks < <(get_supported_tasks "$dataset")
+    echo "Using dataset $dataset with tasks: ${tasks[*]}"
     for task in "${tasks[@]}"; do
         echo "Processing dataset: $DATASET_NAME, task: $task, model: $MODEL_NAME"
         export TASK_NAME=$task
