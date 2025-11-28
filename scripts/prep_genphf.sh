@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --partition=cpu # -p
+#SBATCH --partition=cpu-batch # -p
 #SBATCH --cpus-per-task=32 # -c
 #SBATCH --mem=300gb
 #SBATCH --output=logs/%x_%j.log # %x is job-name, %j is job id
