@@ -20,7 +20,7 @@ eval "$(conda shell.bash hook)"
 set -euo pipefail
 
 cd ~/projects/MEDS_DEV_NEW || exit
-conda activate meds_dev_311
+conda activate genhpf
 
 # Verify conda activation
 if [ -z "$CONDA_DEFAULT_ENV" ]; then
@@ -117,7 +117,7 @@ for dataset in "${datasets[@]}"; do
         rm -rf "$PREDICTIONS_DIR"
         # Train the model (supervised)
         debug_print_env
-        python genhpf-preprocess-meds \
+        genhpf-preprocess-meds \
         "$DATASET_DIR/data" \
         "--cohort=$LABELS_DIR" \
         "--metadata_dir=$DATASET_DIR/metadata" \
