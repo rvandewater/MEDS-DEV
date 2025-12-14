@@ -36,11 +36,7 @@ if [ "$#" -lt 2 ]; then
     exit 1
 fi
 
-export MODEL_NAME=$1
-if [[ ! " ${AVAILABLE_MODELS[*]} " =~ ${MODEL_NAME} ]]; then
-    echo "Error: Invalid MODEL_NAME '${MODEL_NAME}'. Available models are: ${AVAILABLE_MODELS[*]}"
-    exit 1
-fi
+
 shift # Remove MODEL_NAME from arguments
 AVAILABLE_DATASETS=("AUMCdb" "eICU" "EHRShot" "HIRID" "INSPIRE" "MIMIC-IV" "NWICU" "SICdb")
 # Validate input datasets
