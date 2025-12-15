@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=gpu-batch # -p
-#SBATCH --cpus-per-task=16 # -c
-#SBATCH --mem=200gb
+#SBATCH --cpus-per-task=8 # -c
+#SBATCH --mem=80gb
 #SBATCH --gpus=1
 #SBATCH --output=logs/%x_%j.log # %x is job-name, %j is job id
 #SBATCH --account=sci-lippert
