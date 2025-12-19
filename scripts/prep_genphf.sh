@@ -107,7 +107,8 @@ for dataset in "${datasets[@]}"; do
         echo "Cleaning up directories before training..."
         if [ -f "$OUTPUT_DIR/data/held_out.tsv" ]; then
             echo "Preprocessed data already exists in $OUTPUT_DIR/data. Skipping cleanup."
-        else
+            continue
+        fi
         rm -rf "$OUTPUT_DIR"
         rm -rf "$FINETUNED_MODEL_DIR"
         rm -rf "$PREDICTIONS_DIR"
