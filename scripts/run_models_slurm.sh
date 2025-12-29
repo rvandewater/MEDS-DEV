@@ -7,8 +7,7 @@
 #SBATCH --output=logs/%x_%j.log # %x is job-name, %j is job id
 #SBATCH --account=sci-lippert
 #SBATCH --time=168:00:00 # -t
-#SBATCH -C 'GPU_SKU:A40|GPU_SKU:V100|GPU_SKU:2080Ti'
-#SBATCH -C 'ARCH:X86'
+#SBATCH -C #SBATCH -C '(GPU_SKU:A40|GPU_SKU:V100)&ARCH:X86'
 # run with: sbatch run_models_slurm.sh cehrbert HIRID MIMIC-IV
 
 # Initialize conda:
@@ -58,20 +57,21 @@ for dataset in "$@"; do
     fi
 done
 export base_dir="/sc/home/robin.vandewater/datasets/meds"
-export tasks=(
-    "abnormal_lab/cbc/anemia/first_24h"
-    "abnormal_lab/vital/hypotension/first_24h"
-    "abnormal_lab/blood_chemistry/metabolic_acidosis/first_24h"
-    "abnormal_lab/blood_chemistry/hyponatremia/first_24h"
-    "abnormal_lab/blood_chemistry/elevated_creatinine/first_24h"
-    "abnormal_lab/blood_chemistry/hyperkalemia/first_24h"
-    "abnormal_lab/blood_chemistry/hypoglycemia/first_24h"
-    "abnormal_lab/cbc/leukocytosis/first_24h"
-    "abnormal_lab/cbc/thrombocytopenia/first_24h"
-    "mortality/in_icu/first_24h"
-    "readmission/general_hospital/30d"
+source "$(dirname $0)/supported_tasks.sh"
+# export tasks=(
+#     "abnormal_lab/cbc/anemia/first_24h"
+#     "abnormal_lab/vital/hypotension/first_24h"
+#     "abnormal_lab/blood_chemistry/metabolic_acidosis/first_24h"
+#     "abnormal_lab/blood_chemistry/hyponatremia/first_24h"
+#     "abnormal_lab/blood_chemistry/elevated_creatinine/first_24h"
+#     "abnormal_lab/blood_chemistry/hyperkalemia/first_24h"
+#     "abnormal_lab/blood_chemistry/hypoglycemia/first_24h"
+#     "abnormal_lab/cbc/leukocytosis/first_24h"
+#     "abnormal_lab/cbc/thrombocytopenia/first_24h"
+#     "mortality/in_icu/first_24h"
+#     "readmission/general_hospital/30d"
 
-)
+# )
 # Common debug print
 debug_print_env() {
     echo "===== DEBUG ENV ====="
@@ -90,6 +90,7 @@ debug_print_env() {
 for dataset in "${datasets[@]}"; do
     export DATASET_NAME=$dataset
     export DATASET_DIR="$base_dir/$dataset"
+    export tasks=("${!dataset[@]}")
     if [ "$MODEL_NAME" = "cehrbert" ]; then
         # First pretrain the model
         export PRETRAINED_MODEL_DIR="$DATASET_DIR/models/$MODEL_NAME"
