@@ -58,6 +58,24 @@ for dataset in "$@"; do
 done
 export base_dir="/sc/home/robin.vandewater/datasets/meds"
 source "$(dirname $0)/supported_tasks.sh"
+
+# Function to get supported tasks based on input
+get_supported_tasks() {
+    local dataset=$1
+    case $dataset in
+        "AUMCdb") printf "%s\n" "${AUMCdb[@]}" ;;
+        "EHRShot") printf "%s\n" "${EHRShot[@]}" ;;
+        "HIRID") printf "%s\n" "${HIRID[@]}" ;;
+        "INSPIRE") printf "%s\n" "${INSPIRE[@]}" ;;
+        "MIMIC-IV") printf "%s\n" "${MIMIC_IV[@]}" ;;
+        "NWICU") printf "%s\n" "${NWICU[@]}" ;;
+        "SICdb") printf "%s\n" "${SICdb[@]}" ;;
+        "eICU") printf "%s\n" "${eICU[@]}" ;;
+        "MSHS") printf "%s\n" "${MSHS[@]}" ;;
+        *) echo "Unknown dataset: $dataset" ;;
+    esac
+}
+
 # export tasks=(
 #     "abnormal_lab/cbc/anemia/first_24h"
 #     "abnormal_lab/vital/hypotension/first_24h"
@@ -90,7 +108,8 @@ debug_print_env() {
 for dataset in "${datasets[@]}"; do
     export DATASET_NAME=$dataset
     export DATASET_DIR="$base_dir/$dataset"
-    export tasks=("${!dataset[@]}")
+    readarray -t tasks < <(get_supported_tasks "$dataset")
+    echo "Using dataset $dataset with tasks: ${tasks[*]}"
     if [ "$MODEL_NAME" = "cehrbert" ]; then
         # First pretrain the model
         export PRETRAINED_MODEL_DIR="$DATASET_DIR/models/$MODEL_NAME"
