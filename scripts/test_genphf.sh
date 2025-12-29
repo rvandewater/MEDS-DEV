@@ -61,9 +61,9 @@ conda activate genhpf
 cd ~/projects/MEDS_DEV_NEW/
 export base_dir="/sc/home/robin.vandewater/datasets/meds"
 source "$PWD/scripts/supported_tasks.sh"
-export datasets=("HIRID" "MIMIC-IV" "eICU") #("AUMCdb" "EHRShot" "HIRID" "INSPIRE" "NWICU" "SICdb")
+export datasets=("EHRShot") #("HIRID" "MIMIC-IV" "eICU" "EHRShot") #("AUMCdb" "EHRShot" "HIRID" "INSPIRE" "NWICU" "SICdb")
 export MODEL_NAME="genhpf"
-# Function to get supported tasks based on input
+# Function to get supported tasks based on inßput
 get_supported_tasks() {
     local dataset=$1
     case $dataset in
