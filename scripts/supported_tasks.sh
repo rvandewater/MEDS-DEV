@@ -40,7 +40,7 @@ export EHRShot=(
 )
 
 export HIRID=(
-    # "abnormal_lab/cbc/anemia/first_24h"
+    "abnormal_lab/cbc/anemia/first_24h"
     "abnormal_lab/blood_chemistry/elevated_creatinine/first_24h"
     "abnormal_lab/blood_chemistry/hyperkalemia/first_24h"
     "abnormal_lab/blood_chemistry/hypoglycemia/first_24h"
@@ -54,7 +54,7 @@ export HIRID=(
 
 export INSPIRE=(
     "readmission/general_hospital/30d"
-    "abnormal_lab/cbc/anemia/first_24h"
+    # "abnormal_lab/cbc/anemia/first_24h"
     "abnormal_lab/blood_chemistry/elevated_creatinine/first_24h"
     "abnormal_lab/blood_chemistry/hyperkalemia/first_24h"
     "abnormal_lab/blood_chemistry/hyponatremia/first_24h"
