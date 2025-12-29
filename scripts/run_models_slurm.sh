@@ -57,7 +57,7 @@ for dataset in "$@"; do
     fi
 done
 export base_dir="/sc/home/robin.vandewater/datasets/meds"
-source "$(dirname $0)/supported_tasks.sh"
+source "$PWD/scripts/supported_tasks.sh"
 
 # Function to get supported tasks based on input
 get_supported_tasks() {
