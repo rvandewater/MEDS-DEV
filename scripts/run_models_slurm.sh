@@ -93,16 +93,16 @@ get_supported_tasks() {
 # Common debug print
 debug_print_env() {
     echo "===== DEBUG ENV ====="
-    echo "MODEL_NAME=$MODEL_NAME"
-    echo "DATASET_NAME=$DATASET_NAME"
-    echo "DATASET_DIR=$DATASET_DIR"
-    echo "PRETRAINED_MODEL_DIR=$PRETRAINED_MODEL_DIR"
-    echo "TASK_NAME=$TASK_NAME"
-    echo "LABELS_DIR=$LABELS_DIR"
-    echo "FINETUNED_MODEL_DIR=$FINETUNED_MODEL_DIR"
-    echo "PREDICTIONS_DIR=$PREDICTIONS_DIR"
-    echo "OUTPUT_DIR=$OUTPUT_DIR"
-    echo "EVALUATION_DIR=$EVALUATION_DIR"
+    [[ -n "$MODEL_NAME" ]] && echo "MODEL_NAME=$MODEL_NAME" || echo "MODEL_NAME is not bound"
+    [[ -n "$DATASET_NAME" ]] && echo "DATASET_NAME=$DATASET_NAME" || echo "DATASET_NAME is not bound"
+    [[ -n "$DATASET_DIR" ]] && echo "DATASET_DIR=$DATASET_DIR" || echo "DATASET_DIR is not bound"
+    [[ -n "$PRETRAINED_MODEL_DIR" ]] && echo "PRETRAINED_MODEL_DIR=$PRETRAINED_MODEL_DIR" || echo "PRETRAINED_MODEL_DIR is not bound"
+    [[ -n "$TASK_NAME" ]] && echo "TASK_NAME=$TASK_NAME" || echo "TASK_NAME is not bound"
+    [[ -n "$LABELS_DIR" ]] && echo "LABELS_DIR=$LABELS_DIR" || echo "LABELS_DIR is not bound"
+    [[ -n "$FINETUNED_MODEL_DIR" ]] && echo "FINETUNED_MODEL_DIR=$FINETUNED_MODEL_DIR" || echo "FINETUNED_MODEL_DIR is not bound"
+    [[ -n "$PREDICTIONS_DIR" ]] && echo "PREDICTIONS_DIR=$PREDICTIONS_DIR" || echo "PREDICTIONS_DIR is not bound"
+    [[ -n "$OUTPUT_DIR" ]] && echo "OUTPUT_DIR=$OUTPUT_DIR" || echo "OUTPUT_DIR is not bound"
+    [[ -n "$EVALUATION_DIR" ]] && echo "EVALUATION_DIR=$EVALUATION_DIR" || echo "EVALUATION_DIR is not bound"
     echo "====================="
 }
 for dataset in "${datasets[@]}"; do
