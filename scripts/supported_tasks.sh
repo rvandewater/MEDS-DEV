@@ -40,7 +40,7 @@ export EHRShot=(
 )
 
 export HIRID=(
-    "abnormal_lab/cbc/anemia/first_24h"
+    # "abnormal_lab/cbc/anemia/first_24h"
     "abnormal_lab/blood_chemistry/elevated_creatinine/first_24h"
     "abnormal_lab/blood_chemistry/hyperkalemia/first_24h"
     "abnormal_lab/blood_chemistry/hypoglycemia/first_24h"
