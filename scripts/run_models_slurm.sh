@@ -125,6 +125,8 @@ for dataset in "${datasets[@]}"; do
             fi
             export FINETUNED_MODEL_DIR="$DATASET_DIR/models/$TASK_NAME/$MODEL_NAME"
             export PREDICTIONS_DIR="$DATASET_DIR/predictions/$TASK_NAME/$MODEL_NAME"
+            export OUTPUT_DIR="$DATASET_DIR/models/$TASK_NAME/$MODEL_NAME"
+            export EVALUATION_DIR="$DATASET_DIR/results/${TASK_NAME}/${MODEL_NAME}"
             debug_print_env
             meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$PRETRAINED_MODEL_DIR"
             meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=predict dataset_type=supervised split=held_out output_dir="$PREDICTIONS_DIR" model_initialization_dir="$FINETUNED_MODEL_DIR"
