@@ -103,6 +103,7 @@ debug_print_env() {
     [[ -n "$EVALUATION_DIR" ]] && echo "EVALUATION_DIR=$EVALUATION_DIR" || echo "EVALUATION_DIR is not bound"
     echo "====================="
 }
+
 for dataset in "${datasets[@]}"; do
     export DATASET_NAME=$dataset
     export DATASET_DIR="$base_dir/$dataset"
@@ -169,7 +170,6 @@ for dataset in "${datasets[@]}"; do
             export LABELS_DIR="$DATASET_DIR/labels/$task"
             export FINETUNED_MODEL_DIR="$DATASET_DIR/models/$TASK_NAME/$MODEL_NAME"
             export PREDICTIONS_DIR="$DATASET_DIR/predictions/$TASK_NAME/$MODEL_NAME"
-            debug_print_env
             meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$PRETRAINED_MODEL_DIR"
             echo "Completed dataset: $DATASET_NAME, task: $task"
         done
