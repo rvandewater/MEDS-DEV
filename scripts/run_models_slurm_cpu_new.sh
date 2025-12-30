@@ -170,8 +170,8 @@ for dataset in "${datasets[@]}"; do
             export LABELS_DIR="$DATASET_DIR/labels/$task"
             export FINETUNED_MODEL_DIR="$DATASET_DIR/models/$TASK_NAME/$MODEL_NAME"
             export PREDICTIONS_DIR="$DATASET_DIR/predictions/$TASK_NAME/$MODEL_NAME"
-            if [ -f "$FINETUNED_MODEL_DIR""/results/**/best_trial/held_out_predictions.parquet" ]; then
-                echo "Skipping: $task because $FINETUNED_MODEL_DIR/results/**/best_trial/held_out_predictions.parquet already exists"
+            if [ -f "$DATASET_DIR/results/$TASK_NAME/$MODEL_NAME/held_out/results.json" ]; then
+                echo "Skipping: $task because $DATASET_DIR/results/$TASK_NAME/$MODEL_NAME/held_out/results.json already exists"
                 continue
             else
                 rm -rf "$FINETUNED_MODEL_DIR"
