@@ -1,8 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=cpu-batch # -p
-#SBATCH --cpus-per-task=8 # -c
+#SBATCH --cpus-per-task=16 # -c
 #SBATCH --mem=200gb
-#SBATCH --gpus=0
 #SBATCH --output=logs/%x_%j.log # %x is job-name, %j is job id
 #SBATCH --account=sci-lippert
 #SBATCH --time=168:00:00 # -t
