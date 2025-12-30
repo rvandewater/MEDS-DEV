@@ -173,9 +173,11 @@ for dataset in "${datasets[@]}"; do
             if [ -f "$FINETUNED_MODEL_DIR""/results/**/best_trial/held_out_predictions.parquet" ]; then
                 echo "Skipping: $task because $FINETUNED_MODEL_DIR/results/**/best_trial/held_out_predictions.parquet already exists"
                 continue
+            else
+                rm -rf "$FINETUNED_MODEL_DIR"
+                meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$FINETUNED_MODEL_DIR"
+                echo "Completed dataset: $DATASET_NAME, task: $task"
             fi
-            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$FINETUNED_MODEL_DIR"
-            echo "Completed dataset: $DATASET_NAME, task: $task"
         done
     fi
 done
