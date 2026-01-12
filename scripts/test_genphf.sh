@@ -123,6 +123,10 @@ for dataset in "${datasets[@]}"; do
             echo "Trained model not found at $FINETUNED_MODEL_DIR/checkpoints/checkpoint_best.pt, skipping testing."
             continue
         fi
+        if [ -f "$OUTPUT_DIR/predictions.parquet" ]; then
+            echo "Predictions already exist in $OUTPUT_DIR/predictions.parquet, skipping generation."
+            continue
+        fi
         genhpf-test \
             "hydra.run.dir=$OUTPUT_DIR" \
             "dataset.data=$OUTPUT_DIR/data" \
