@@ -14,11 +14,6 @@ predicates:
   icu_discharge:
     code: { regex: "^ICU_DISCHARGE//.*" }
 
-  birth:
-    code: MEDS_BIRTH
-  death:
-    code: MEDS_DEATH
-
   creatinine_1:
     code: LAB//50912//mg/dL
   creatinine_2:
@@ -35,7 +30,7 @@ predicates:
     value_max: null
   creatinine:
     expr: or(creatinine_1, creatinine_2)
-  abnormally_high_creatinine:
+  abnormally_high_creatinine_mg_dL:
     expr: or(abnormally_high_creatinine_1, abnormally_high_creatinine_2)
 
   sodium_1:
@@ -66,6 +61,7 @@ predicates:
 
   bicarbonate_1:
     code: LAB//227443//mEq/L
+  # bicarbonate in hosp
   bicarbonate_2:
     code: LAB//50882//mEq/L
   abnormally_low_bicarbonate_1:
@@ -165,3 +161,30 @@ predicates:
     expr: or(map_1, map_2, map_3)
   abnormally_low_map:
     expr: or(abnormally_low_map_1, abnormally_low_map_2, abnormally_low_map_3)
+
+  glucose:
+    code: LAB//220621//mg/dL
+  abnormally_low_glucose:
+    code: LAB//220621//mg/dL
+    value_min: null
+    value_max: 70.2 # mg/dL
+    value_max_inclusive: True
+
+  potassium_1:
+    code: LAB//52610//mEq/L
+  potassium_2:
+    code: LAB//50971//mEq/L
+  abnormally_high_potassium_1:
+    code: LAB//52610//mEq/L
+    value_min: 5.0 # mEq/L
+    value_min_inclusive: True
+    value_max: null
+  abnormally_high_potassium_2:
+    code: LAB//50971//mEq/L
+    value_min: 5.0 # mEq/L
+    value_min_inclusive: True
+    value_max: null
+  potassium:
+    expr: or(potassium_1, potassium_2)
+  abnormally_high_potassium:
+    expr: or(abnormally_high_potassium_1, abnormally_high_potassium_2)

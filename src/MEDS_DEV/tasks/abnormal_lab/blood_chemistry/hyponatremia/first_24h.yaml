@@ -1,18 +1,29 @@
 metadata:
-  test_datasets:
+  description: >-
+    This task predicts whether the patient will have low _sodium_ values (hyponatremia) within the
+    next 24 hours, given the first 24 hours of their admission to the _hospital_. To be included,
+    1) patients must have at least one measurement for _sodium_ within the next 24 hours after their
+    admission to the hospital, 2) patients must not have shown low _sodium_ values previously, and
+    3) their length of stay in the hospital must be at least 48 hours.
+  links: []
+  contacts:
+    - name: "Jungwoo Oh"
+      github_username: "jwoo5"
+  supported_datasets:
     - MIMIC-IV
-description: >-
-  This task predicts whether the patient will have low _sodium_ values (hyponatremia) within the
-  next 24 hours, given the first 24 hours of their admission to the _hospital_. To be included,
-  1) patients must have at least one measurement for _sodium_ within the next 24 hours after their
-  admission to the hospital, 2) patients must not have shown low _sodium_ values previously, and
-  3) their length of stay in the hospital must be at least 48 hours.
+    - AUMCdb
+    - SICdb
+    - INSPIRE
+    - NWICU
+    - HIRID
 
 predicates:
   hospital_admission: ???
   hospital_discharge: ???
-  birth: ???
-  death: ???
+  birth:
+    code: { regex: "MEDS_BIRTH.*" }
+  death:
+    code: { regex: "MEDS_DEATH.*" }
   discharge_or_death:
     expr: or(death, hospital_discharge)
 
@@ -25,6 +36,11 @@ predicates:
     value_max: 135 # mEq/L
     value_max_inclusive: False
 
+  diagnosed_hyponatremia:
+    code: ???
+  hyponatremia_combined:
+    expr: or(diagnosed_hyponatremia, abnormally_low_sodium)
+
 trigger: hospital_admission
 
 windows:
@@ -36,7 +52,7 @@ windows:
     index_timestamp: end
     # do not allow to have shown low sodium values previously
     has:
-      abnormally_low_sodium: (None, 0)
+      hyponatremia_combined: (None, 0)
   # do not allow hospital discharge to happen within the input + target window
   no_discharge:
     start: trigger
@@ -61,4 +77,4 @@ windows:
     end_inclusive: True
     has:
       sodium: (1, None)
-    label: abnormally_low_sodium
+    label: hyponatremia_combined

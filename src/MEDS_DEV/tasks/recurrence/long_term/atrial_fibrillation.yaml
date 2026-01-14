@@ -1,0 +1,37 @@
+metadata:
+  description:
+    Prediction task for atrial fibrillation incidence following hospital
+    discharge
+  links: []
+  contacts:
+    - name: Robin van de Water
+      github_username: rvandewater
+  supported_datasets:
+    - MIMIC-IV
+predicates:
+  hospital_admission: ???
+  hospital_discharge: ???
+  atrial_fibrillation:
+    code:
+      regex: I48
+trigger: hospital_discharge
+windows:
+  input:
+    start: end <- hospital_admission
+    end: trigger
+    start_inclusive: false
+    end_inclusive: true
+    index_timestamp: end
+  gap:
+    start: trigger
+    end: start + 365 days
+    start_inclusive: false
+    end_inclusive: true
+    has:
+      atrial_fibrillation: (None, 0)
+  target:
+    start: gap.end
+    end: start + 1095 days
+    start_inclusive: false
+    end_inclusive: true
+    label: atrial_fibrillation

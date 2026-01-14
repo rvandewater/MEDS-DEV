@@ -1,0 +1,86 @@
+#!/bin/bash
+export DATASET_NAME="MIMIC-IV"
+export DATASET_DIR="/sc/home/robin.vandewater/datasets/meds/MIMIC-IV"
+meds-dev-dataset dataset=$DATASET_NAME output_dir=$DATASET_DIR
+
+# Define the datasets and tasks
+export datasets=(
+    # "AUMCdb"
+    # "eICU"
+    # "EHRShot"
+    # "HIRID"
+    # "INSPIRE"
+    "MIMIC-IV"
+    # "NWICU"
+    # "SICdb"
+)
+
+export tasks=(
+    "abnormal_lab/vital/hypotension/first_24h"
+    "abnormal_lab/blood_chemistry/metabolic_acidosis/first_24h"
+    "abnormal_lab/blood_chemistry/hyponatremia/first_24h"
+    "abnormal_lab/blood_chemistry/elevated_creatinine/first_24h"
+    "abnormal_lab/cbc/leukocytosis/first_24h"
+    "abnormal_lab/cbc/thrombocytopenia/first_24h"
+    "abnormal_lab/cbc/anemia/first_24h"
+    "mortality/in_icu/first_24h"
+    "readmission/general_hospital/30d"
+)
+export tasks=(
+    "mortality/in_icu/first_24h"
+)
+export datasets=("HIRID")
+
+# Base directory for datasets
+export base_dir="/sc/home/robin.vandewater/datasets/meds"
+
+# Loop through datasets and tasks
+for dataset in "${datasets[@]}"; do
+    export DATASET_NAME=$dataset
+    export DATASET_DIR="$base_dir/$dataset"
+
+    for task in "${tasks[@]}"; do
+        echo "Processing dataset: $DATASET_NAME, task: $task"
+        export TASK_NAME=$task
+        export LABELS_DIR="$DATASET_DIR/labels/$task"
+
+        # Run the meds-dev-task command
+        meds-dev-task task="$TASK_NAME" dataset="$DATASET_NAME" output_dir="$LABELS_DIR" dataset_dir="$DATASET_DIR"
+
+        echo "Completed dataset: $DATASET_NAME, task: $task"
+    done
+done
+# srun -c 8 --mem 100GB -p gpu-interactive --gpus=1  -t 8:00:00 --account=sci-lippert --pty bash
+export MODEL_NAME="meds_tab/tiny"
+# export MODEL_NAME="cehrbert"
+# export MODEL_NAME="genhpf"
+# export MODEL_NAME="cehrbert"
+# export datasets=("NWICU")
+for dataset in "${datasets[@]}"; do
+    export DATASET_NAME=$dataset
+    export DATASET_DIR="$base_dir/$dataset"
+
+    for task in "${tasks[@]}"; do
+        echo "Processing dataset: $DATASET_NAME, task: $task"
+        export TASK_NAME=$task
+        export LABELS_DIR="$DATASET_DIR/labels/$task"
+        export FINETUNED_MODEL_DIR="$DATASET_DIR/models/$TASK_NAME/$MODEL_NAME"
+        export PREDICTIONS_DIR="$DATASET_DIR/predictions/$TASK_NAME/$MODEL_NAME"
+        # Run the meds-dev-task command
+        export PRETRAINED_MODEL_DIR="$DATASET_DIR/models/$MODEL_NAME"
+        if [ "$MODEL_NAME" = "cehrbert" ]; then
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" mode=train dataset_type=unsupervised output_dir="$PRETRAINED_MODEL_DIR"
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$PRETRAINED_MODEL_DIR"
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=predict dataset_type=supervised split=held_out output_dir="$PREDICTIONS_DIR" model_initialization_dir="$FINETUNED_MODEL_DIR"
+        elif [ "$MODEL_NAME" = "genhpf" ]; then
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$PRETRAINED_MODEL_DIR"
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=predict dataset_type=supervised split=held_out output_dir="$PREDICTIONS_DIR" model_initialization_dir="$FINETUNED_MODEL_DIR"
+        elif [ "$MODEL_NAME" = "meds_tab/tiny" ]; then
+            meds-dev-model model="$MODEL_NAME" dataset_dir="$DATASET_DIR" labels_dir="$LABELS_DIR" mode=train dataset_type=supervised output_dir="$FINETUNED_MODEL_DIR" model_initialization_dir="$PRETRAINED_MODEL_DIR"
+        else
+            echo "Unknown MODEL_NAME: $MODEL_NAME"
+            exit 1
+        fi
+        echo "Completed dataset: $DATASET_NAME, task: $task"
+    done
+done

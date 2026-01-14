@@ -1,0 +1,51 @@
+metadata:
+  description:
+    Prediction task for inflammatory bowel disease incidence following
+    hospital discharge
+  links: []
+  contacts:
+    - name: Robin van de Water
+      github_username: rvandewater
+  supported_datasets:
+    - MIMIC-IV
+predicates:
+  hospital_admission: ???
+  hospital_discharge: ???
+  icd10_diagnosis:
+    code:
+      regex: "ICD//10//.+" # Matches any ICD-10 code
+  inflammatory_bowel_disease:
+    code:
+      regex: K50|K51
+trigger: hospital_discharge
+windows:
+  input:
+    start: end <- hospital_admission
+    end: trigger
+    start_inclusive: false
+    end_inclusive: true
+    index_timestamp: end
+    # has:
+    # _ANY_EVENT: (10, None)
+    # icd10_diagnosis: (1, None)
+  prior_history:
+    start: NULL # Beginning of patient record
+    end: trigger
+    start_inclusive: True
+    end_inclusive: False
+    has:
+      hospital_admission: (1, None) # At least 1 ICD-10 code required
+
+  gap:
+    start: trigger
+    end: start + 365 days
+    start_inclusive: false
+    end_inclusive: true
+    has:
+      inflammatory_bowel_disease: (None, 0)
+  target:
+    start: gap.end
+    end: start + 1095 days
+    start_inclusive: false
+    end_inclusive: true
+    label: inflammatory_bowel_disease

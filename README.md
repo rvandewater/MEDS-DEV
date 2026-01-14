@@ -2,13 +2,13 @@
 
 [![PyPI - Version](https://img.shields.io/pypi/v/MEDS-DEV)](https://pypi.org/project/MEDS-DEV/)
 ![python](https://img.shields.io/badge/-Python_3.11-blue?logo=python&logoColor=white)
-[![codecov](https://codecov.io/gh/mmcdermott/MEDS-DEV/graph/badge.svg?token=5RORKQOZF9)](https://codecov.io/gh/mmcdermott/MEDS-DEV)
-[![tests](https://github.com/mmcdermott/MEDS-DEV/actions/workflows/tests.yaml/badge.svg)](https://github.com/mmcdermott/MEDS-DEV/actions/workflows/tests.yml)
-[![code-quality](https://github.com/mmcdermott/MEDS-DEV/actions/workflows/code-quality-main.yaml/badge.svg)](https://github.com/mmcdermott/MEDS-DEV/actions/workflows/code-quality-main.yaml)
+[![codecov](https://codecov.io/gh/Medical-Event-Data-Standard/MEDS-DEV/graph/badge.svg?token=5RORKQOZF9)](https://codecov.io/gh/Medical-Event-Data-Standard/MEDS-DEV)
+[![tests](https://github.com/Medical-Event-Data-Standard/MEDS-DEV/actions/workflows/tests.yaml/badge.svg)](https://github.com/Medical-Event-Data-Standard/MEDS-DEV/actions/workflows/tests.yml)
+[![code-quality](https://github.com/Medical-Event-Data-Standard/MEDS-DEV/actions/workflows/code-quality-main.yaml/badge.svg)](https://github.com/Medical-Event-Data-Standard/MEDS-DEV/actions/workflows/code-quality-main.yaml)
 [![hydra](https://img.shields.io/badge/Config-Hydra_1.3-89b8cd)](https://hydra.cc/)
-[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/mmcdermott/MEDS-DEV#license)
-[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/mmcdermott/MEDS-DEV/pulls)
-[![contributors](https://img.shields.io/github/contributors/mmcdermott/MEDS-DEV.svg)](https://github.com/mmcdermott/MEDS-DEV/graphs/contributors)
+[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Medical-Event-Data-Standard/MEDS-DEV#license)
+[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Medical-Event-Data-Standard/MEDS-DEV/pulls)
+[![contributors](https://img.shields.io/github/contributors/Medical-Event-Data-Standard/MEDS-DEV.svg)](https://github.com/Medical-Event-Data-Standard/MEDS-DEV/graphs/contributors)
 
 The MEDS Decentralized, Extensible Validation (MEDS-DEV) system is a new kind of benchmark for Health AI that
 has three key differences from existing systems:
@@ -64,6 +64,10 @@ clone your fork, and then install the repository locally in "editable" mode via 
 This will let you prepare your PR code and run the tests to ensure your contributions are valid and
 transportable across MEDS-DEV datasets and tasks.
 
+> [!NOTE]
+> The current Python version supported by MEDS-DEV is Python 3.11. Please ensure you have Python 3.11 installed
+> as you might encounter compatibility issues with other versions.
+
 ## Using Existing MEDS-DEV Datasets, Tasks, or Models
 
 To reproduce a MEDS-DEV result (or transport a MEDS-DEV result to your local dataset), you will generally need
@@ -80,7 +84,7 @@ MEDS-DEV has helper functions to help you easily perform all of these steps.
 
 ### Building a dataset
 
-> \[!Note\]
+> [!NOTE]
 > If your dataset is already extracted in the MEDS format, you can skip this step and assume that
 > `$DATASET_DIR` points to the directory containing your MEDS-formatted dataset.
 
@@ -94,11 +98,12 @@ meds-dev-dataset dataset=$DATASET_NAME output_dir=$DATASET_DIR
 where `DATASET_NAME` is the name of the dataset you want to build and `OUTPUT_DIR` is the directory where you
 want to store the final, MEDS-formatted dataset.
 
-> \[!NOTE\]
+> [!NOTE]
 > Note that you can also specify `demo=True` to build a demo version of this dataset (if supported) for ease
-> of testing the pipeline and your downstream code.
+> of testing the pipeline and your downstream code. If your dataset is behind credentials, also be sure to provide them.
+> e.g., for MIMIC-IV: export DATASET_DOWNLOAD_USERNAME="" and export DATASET_DOWNLOAD_PASSWORD=
 
-> \[!NOTE\]
+> [!NOTE]
 > Note that here, `$DATASET_NAME` is the entire, slash-separated path from `src/MEDS_DEV/datasets/` to the
 > directory containing the dataset's `commands.yaml` and `README.md` files. This name is a unique identifier
 > for MEDS-DEV datasets so that the right task-specific predicates can be used and that it is clear what
@@ -106,12 +111,12 @@ want to store the final, MEDS-formatted dataset.
 
 ### Extracting a task
 
-> \[!Note\]
+> [!NOTE]
 > If your task labels are already extracted in the MEDS format, you can skip this step and assume that
 > `$LABELS_DIR` points to the directory containing your MEDS-formatted task labels for the specific task of
 > interest.
 
-> \[!NOTE\]
+> [!NOTE]
 > MEDS-DEV currently only supports binary classification tasks.
 
 To extract a task from a dataset, you can use the `meds-dev-task` helper:
@@ -126,7 +131,7 @@ are extracting from (this name is used to locate the right `predicates.yaml` fil
 you want to store the extracted task labels. The output will be a set of parquet files in the
 [meds](https://github.com/Medical-Event-Data-Standard/meds) label format.
 
-> \[!Warning\]
+> [!WARNING]
 > Right now, we don't have a good way to point to predicates files on disk that are used for datasets not yet
 > configured for MEDS-DEV. File a new or up-vote any existing relevant GitHub issues for this functionality if
 > it would be helpful for you! In general, we encourage that, eventually, any dataset over which MEDS-DEV
@@ -135,20 +140,20 @@ you want to store the extracted task labels. The output will be a set of parquet
 > the code you use to build the MEDS view of these data so others at your site can contribute in a
 > reproducible way).
 
-> \[!Note\]
+> [!NOTE]
 > Note that here, `$TASK_NAME` is the entire, slash-separated path from `src/MEDS_DEV/tasks/` to the
 > task configuration file. This name is a unique identifier for MEDS-DEV tasks.
 
-> \[!Note\]
+> [!NOTE]
 > Note that _it is guaranteeably true that not all tasks will be appropriate for or supported on all
 > datasets._ Some tasks are only suited for certain clinical populations, which may not exist on all datasets.
 > We're still figuring out the best way to operationalize this formally, but for now, please be cognizant of
 > whether or not a task should be used on your dataset, and if you have ideas on this, don't hesitate to weigh
-> in on [the GitHub Issue](https://github.com/mmcdermott/MEDS-DEV/issues/60) about this!
+> in on [the GitHub Issue](https://github.com/Medical-Event-Data-Standard/MEDS-DEV/issues/60) about this!
 
 ### Using a model
 
-> \[!Note\]
+> [!NOTE]
 > MEDS-DEV is not about (for now) assessing the generalizability of fully pre-trained models from site A to
 > site B. Instead, it is about assessing the generalizability of model _training recipes_ (e.g., algorithms).
 > This section reflects that by giving instructions on how you can use MEDS-DEV to train a model from scratch
@@ -177,12 +182,12 @@ Here, `$MODEL_NAME` is the name of the model you want to train within the MEDS-D
 the pre-trained model weights are passed to the fine-tuning stage via the `model_initialization_dir`
 parameter, and likewise for the fine-tuned model weights to the prediction stage.
 
-> \[!Note\]
+> [!NOTE]
 > If you're a model creator, don't worry that you'll have to conform to this API -- this is just the API for
 > model users, and internally MEDS-DEV wraps this API into whatever custom scripts and calls you need your
 > model to take to train and predict. See the section below about "Contributing" for more details!
 
-> \[!Note\]
+> [!NOTE]
 > You can also run the full suite of supported commands for a model in the right order, chaining directories
 > as needed, using the `mode=full` and `dataset_type=full` options. This will run the full sequence of
 > commands in 1-3 above, and store the intermediate results in subdirectories of the output directory.
@@ -192,7 +197,7 @@ parameter, and likewise for the fine-tuned model weights to the prediction stage
 To evaluate the predictions of a model on a task, you can use the `meds-evaluation` helper:
 
 ```bash
-meds-evaluation predictions_dir=$PREDICTIONS_DIR labels_dir=$LABELS_DIR output_dir=$EVALUATION_DIR
+meds-dev-evaluation predictions_dir=$PREDICTIONS_DIR output_dir=$EVALUATION_DIR
 ```
 
 The output JSON file from MEDS-Evaluation will contain the results of the evaluation, including the AUROC,
@@ -206,7 +211,7 @@ the public record to help advance the science of Health AI!
 
 ## Contributing New Things to MEDS-DEV
 
-> \[!Note\]
+> [!NOTE]
 > See the [templates](templates) folder for templates for the README files for new tasks, datasets, or models!
 
 ### Adding a dataset
@@ -214,14 +219,29 @@ the public record to help advance the science of Health AI!
 To add a dataset, you will need to create a new directory under `src/MEDS_DEV/datasets/` with the name of the
 dataset, containing the following files:
 
-1. `README.md`: This file should contain a description of the dataset. See the templates for examples.
+1. `README.md`: This file should contain a description of the dataset. See the [templates](templates) for examples.
 2. `requirements.txt`: This file should be a valid `pip` specification for what is needed to install the ETL
     to build the environment. _The ETL must be runnable on Python 3.11_.
-3. `commands.yaml`: This file must have two shell command strings under the keys `build_full` and
-    `build_demo` that, if run in an environment with the requirements installed, with the specified
-    placeholder variables (indicated in python syntax, include `temp_dir` for intermediate files and
-    `output_dir` for where you want the final MEDS cohort to live) will produce the desired MEDS cohort.
+3. `dataset.yaml`: This file needs to have two keys: `metadata` and `commands`. Under `commands`, you must
+    have the keys `build_full` and `build_demo` that, if run in an environment with the requirements installed,
+    with the specified placeholder variables (indicated in python syntax, include `temp_dir` for intermediate
+    files and `output_dir` for where you want the final MEDS cohort to live) will produce the desired MEDS
+    cohort. The `metadata` key should contain information about the dataset. See the `MIMIC-IV` dataset for an
+    example of the allowed syntax here. Mandatory keys include `description`, `access_policy`, and the key
+    `contacts` with at least one entry. Note that the values for `access_policy` are restricted to the values
+    of the `AccessPolicy` `StrEnum` in the `MEDS_DEV.datasets` codebase, namely:
+    - `"public_with_approval"`: Data that can be used (in principle) by anyone, but requires approval to access.
+    - `"public_unrestricted"`: Data that can be used by anyone with no restrictions or gating.
+    - `"institutional"`: Data that is only available within a specific institution or department, but is in
+        principle accessible to all researchers within that group. This should not be used for data that has
+        only been approved for a single group or a single research process.
+    - `"private_single_use"`: Data that is only available to a single research group or project, and is not
+        available nor likely to ever become available outside of that limited context.
+    - `"other"`: Any other access mode that does not fit into the above categories. If you use this, you must
+        describe the access policy in more details in the `access_details` optional field in the metadata.
 4. `predicates.yaml` contains ACES syntax predicates to realize the target tasks.
+5. Optionally, you should add a `refs.bib` file with a BibTex entry users should cite when they use the
+    dataset.
 
 If all of these are defined, then you can, after installing `MEDS-DEV` via `pip install -e .`, run the command
 `meds-dev-dataset dataset=DATASET_NAME output_dir=OUTPUT_DIR` to generate the MEDS cohort for that dataset
@@ -233,25 +253,30 @@ To add a task, simply create a new task configuration file under `src/MEDS_DEV/t
 (slash-separated) task name. The task configuration file should be a valid ACES configuration file, with the
 predicates left as placeholders to-be-overwritten by dataset-specific predicates. In addition, in the same
 series of folders leading to the task configuration file, you should have `README.md` files that describe what
-those "categories" of tasks mean.
+those "categories" of tasks mean. Note you can also specify a `refs.bib` file here, like with a dataset.
 
 Once a task is defined, then you can, after installing `MEDS-DEV` via `pip install -e .`, run the command
 `meds-dev-task task=TASK_NAME dataset=DATASET_NAME output_dir=OUTPUT_DIR dataset_dir=DATASET_DIR` to generate
 the labels for task `TASK_NAME` over dataset `DATASET_NAME` stored in the directory `DATASET_DIR` in the
 output directory `OUTPUT_DIR`.
 
-For testing purposes, _e.g., to ensure your task is correctly defined and supported by the expected datasets_,
-you should also include the following information in a `metadata` block in your task config:
+You should also specify meaningful metadata about the task in the `metadata` key of the task configuration.
+This metadata should include a list of datasets that the task is applicable to, e.g.,
 
-```
+```yaml
 metadata:
-  test_datasets:
+  description: >-
+    A description of your task
+  contacts:
+    - name: Your name
+      github_username: Your GitHub username
+  supported_datasets:
     - MIMIC-IV
-    - ...
+    - '...'
 ```
 
-where the list of datasets in `metadata.test_datasets` will be used to test the task automatically by the test
-set-up (against the _demo_ version of that dataset only!)
+The datasets you highlight in the `supported_datasets` key will also be used to test this task config against
+the supported MEDS-DEV datasets.
 
 ### Adding a model
 
@@ -260,7 +285,9 @@ this subdirectory, create a `requirements.txt`, `README.md`, and `model.yaml` fi
 contains the necessary Python packages to install to run the model, similar to dataset creation, the
 `README.md` contains a description of the model, and the `model.yaml` file contains some programmatic
 information about the model, including most critically a `commands` key with a dictionary of commands needed
-to run to train the model from scratch on a MEDS dataset.
+to run to train the model from scratch on a MEDS dataset. It also must include a `metadata` key with some
+example of the metadata. See the existing models for examples. Note you can also specify a `refs.bib` file
+here, like with a dataset.
 
 A full description of these commands is coming soon, but for now, note that:
 
@@ -298,3 +325,23 @@ You can also restrict the set of tasks, datasets, and models that you explore us
 `--test_task`, `--test_dataset`, and `--test_model`, respectively. These options can be used to run only the
 selected options (repeating the argument as needed, e.g., `--test_task=task1 --test_task=task2`). If they are
 omitted or if `'all'` is specified as an option, then all allowed tests will be run.
+
+Note that _caching does not imply that test code will not be re-run_ -- instead, it just ensures that output
+files are stored on disk in the specified directory. For some aspects of MEDS-DEV, this means that test-code
+will be re-run and files replaced; for others, it will be reused. This is a feature, not a bug, as it allows
+you to inspect output files while reliably re-testing code. However, if you want to fully reuse a component
+of a test, you can also specify the additional arguments: `--reuse_cached_dataset`, `--reuse_cached_task`, or
+`--reuse_cached_model` with the same syntax of the `--cache_*` and `--test_*` arguments. Then, the test code
+will explicitly mark the specified components within the persistent cache directory as "reusable" and will
+not re-run the associated MEDS-DEV code pipelines in between test runs, but simply reuse the outputs.
+
+By default, even when caching is enabled, the testing code will clear the virtual environments of the various
+model and dataset runs after they are no longer needed, to reduce the overall disk footprint of the test
+suite. You can disable this by adding the argument `--no_do_clear_venvs` to the pytest command line.
+
+## Notes
+
+1. Some models in this repo use Hugging Face Datasets objects. These cache data to disk in a directory you
+    can control via the environment variable `HF_DATASETS_CACHE`. If you have disk space or security concerns
+    about storage in the ordinary cache directory, you should set this variable manually to a desired
+    directory in your terminal before running MEDS-DEV commands. See #144 for more details.

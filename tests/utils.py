@@ -4,6 +4,8 @@ from pathlib import Path
 
 from omegaconf import OmegaConf
 
+NAME_AND_DIR = tuple[str, Path]
+
 
 def dict_to_hydra_kwargs(d: dict[str, str]) -> str:
     """Converts a dictionary to a hydra kwargs string for testing purposes.
@@ -52,7 +54,7 @@ def dict_to_hydra_kwargs(d: dict[str, str]) -> str:
                     handled = False
                     for mod in modifier_chars:
                         if inner_kv.startswith(mod):
-                            out.append(f"{mod}{k}.{inner_kv[len(mod):]}")
+                            out.append(f"{mod}{k}.{inner_kv[len(mod) :]}")
                             handled = True
                             break
                     if not handled:
@@ -104,7 +106,7 @@ def run_command(
 
         command_parts.extend(
             [
-                f"--config-path={str(conf_path.parent.resolve())}",
+                f"--config-path={conf_path.parent.resolve()!s}",
                 "--config-name=config",
                 "'hydra.searchpath=[pkg://MEDS_transforms.configs]'",
             ]
